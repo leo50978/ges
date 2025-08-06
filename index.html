@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GES - Investissez dans votre avenir avec des services financiers sécurisés et une éducation financière accessible">
+    
+    <title>GES - Services Financiers Premium</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Manrope', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        primary: '#FF6B35',
+                        secondary: '#004E89',
+                        dark: '#1A1A2E',
+                        light: '#F8F9FA',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Anime.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    
+    <style>
+        /* Styles CSS personnalisés */
+        :root {
+            --primary: #FF6B35;
+            --secondary: #004E89;
+        }
+        
+        /* Clip-path styles */
+        .clip-circle {
+            clip-path: circle(50% at 50% 50%);
+        }
+        
+        .clip-polygon {
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        }
+        
+   
+        
+        /* Animations de base */
+        .fade-in {
+            opacity: 0;
+            transition: opacity 0.6s ease-out;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+        }
+        
+        .slide-up {
+            transform: translateY(50px);
+            opacity: 0;
+            transition: transform 0.6s ease-out, opacity 0.6s ease-out;
+        }
+        
+        .slide-up.visible {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        
+        /* Style pour le header fixe */
+        .header-scrolled {
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Style pour les cartes */
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 78, 137, 0.15);
+        }
+    </style>
+</head>
+<body class="font-sans text-dark bg-light antialiased">
+    <!-- Navigation Principale -->
+    <header id="main-header" class="fixed w-full z-50 transition-all duration-300">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <a href="#" class="flex items-center">
+                    <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white font-bold text-xl mr-2">
+                        GES
+                    </div>
+                    <span class="text-xl font-bold hidden md:block"></span>
+                </a>
+                
+                <!-- Menu principal -->
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#accueil" class="font-medium hover:text-primary transition">Accueil</a>
+                    <a href="#apropos" class="font-medium hover:text-primary transition">À propos</a>
+                    <a href="#services" class="font-medium hover:text-primary transition">Services</a>
+                    <a href="#temoignages" class="font-medium hover:text-primary transition">Témoignages</a>
+                    <a href="#blog" class="font-medium hover:text-primary transition">Blog</a>
+                    <a href="#contact" class="font-medium hover:text-primary transition">Contact</a>
+                </nav>
+                
+                <!-- CTA et réseaux sociaux -->
+               <div class="flex items-center space-x-4">
+                    <a href="#contact" class="bg-primary text-white px-4 py-2 rounded-full font-medium hover:bg-opacity-90 transition hidden md:block">
+                        Prendre un rendez-vous
+                    </a>
+                    
+                    <!-- Menu mobile -->
+                    <button id="mobile-menu-button" class="md:hidden text-dark focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Menu mobile -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white py-4 px-4 shadow-lg">
+            <div class="flex flex-col space-y-4">
+                <a href="#accueil" class="font-medium hover:text-primary transition">Accueil</a>
+                <a href="#apropos" class="font-medium hover:text-primary transition">À propos</a>
+                <a href="#services" class="font-medium hover:text-primary transition">Services</a>
+                <a href="#portfolio" class="font-medium hover:text-primary transition">Portfolio</a>
+                <a href="#teoignages" class="font-medium hover:text-primary transition">Témoignages</a>
+                <a href="#blog" class="font-medium hover:text-primary transition">Blog</a>
+                <a href="#faq" class="font-medium hover:text-primary transition">FAQ</a>
+                <a href="#contact" class="font-medium hover:text-primary transition">Contact</a>
+                
+                <a href="#" class="bg-primary text-white px-4 py-2 rounded-full font-medium hover:bg-opacity-90 transition text-center">
+                    Prendre un rendez-vous
+                </a>
+                
+                <div class="flex justify-center space-x-4 pt-4">
+                    <a href="#" class="text-dark hover:text-primary"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-dark hover:text-primary"><i class="fab fa-tiktok"></i></a>
+                    <a href="#" class="text-dark hover:text-primary"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="#" class="text-dark hover:text-primary"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-dark hover:text-primary"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="text-dark hover:text-primary"><i class="fab fa-threads"></i></a>
+                    <a href="#" class="text-dark hover:text-primary"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" class="text-dark hover:text-primary"><i class="fab fa-snapchat"></i></a>
+                    <a href="#" class="text-dark hover:text-primary"><i class="fab fa-pinterest"></i></a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="pt-32 pb-20 md:pt-40 md:pb-32 relative overflow-hidden clip-polygon">
+        <section id="accueil" class="py-16 bg-white"></section>
+        <div class="absolute inset-0 bg-gradient-to-r from-secondary to-primary opacity-90 z-0"></div>
+        <div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')] bg-cover bg-center z-10 mix-blend-overlay"></div>
+        
+        <div class="container mx-auto px-4 relative z-20">
+            <div class="max-w-3xl mx-auto text-center fade-in">
+                <h1 class="text-4xl md:text-6xl font-serif font-bold text-white mb-6 slide-up">
+                    🚀 Investissez dans votre avenir avec GES
+                </h1>
+                <h2 class="text-xl md:text-2xl text-white opacity-90 mb-8 slide-up">
+                    Accès simple et sécurisé aux placements, trading et éducation financière.
+                </h2>
+                <div class="flex flex-col sm:flex-row justify-center gap-4 mb-12 slide-up">
+                    <a href="#" class="hidden bg-white text-primary px-6 py-3 rounded-full font-bold hover:bg-opacity-90 transition text-center">
+                        Ouvrir un compte
+                    </a>
+                    <a href="#services" class="bg-transparent border-2 border-white text-white px-6 py-3 rounded-full font-bold hover:bg-white hover:text-primary transition text-center">
+                        Découvrir nos services
+                    </a>
+                </div>
+                
+                <div class="flex flex-wrap justify-center gap-4 slide-up">
+                    <div class="bg-white bg-opacity-20 px-4 py-2 rounded-full backdrop-blur-sm flex items-center">
+                        <i class="fas fa-shield-alt text-white mr-2"></i>
+                        <span class="text-white text-sm">Sécurité internationale</span>
+                    </div>
+                    <div class="bg-white bg-opacity-20 px-4 py-2 rounded-full backdrop-blur-sm flex items-center">
+                        <i class="fas fa-certificate text-white mr-2"></i>
+                        <span class="text-white text-sm">Expertise certifiée</span>
+                    </div>
+                    <div class="bg-white bg-opacity-20 px-4 py-2 rounded-full backdrop-blur-sm flex items-center">
+                        <i class="fas fa-lock text-white mr-2"></i>
+                        <span class="text-white text-sm">Paiements protégés</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Présentation GES -->
+    <section id="apropos" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row items-center gap-12">
+                <div class="lg:w-1/2 fade-in">
+                    <h2 class="text-3xl md:text-4xl font-serif font-bold mb-6 text-dark slide-up">
+                        Qui est GES ?
+                    </h2>
+                    <p class="text-lg text-gray-700 mb-6 slide-up">
+                        Fondé en 2010, GES (Global Economic Services) est un leader dans les services financiers inclusifs, offrant des solutions adaptées à tous les profils d'investisseurs. Notre mission est de démocratiser l'accès aux marchés financiers grâce à des outils innovants et une éducation continue.
+                    </p>
+                    <p class="text-lg text-gray-700 mb-8 slide-up">
+                        Notre vision : "L'inclusion financière pour tous, sans compromis sur la sécurité ou la performance."
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                        <div class="bg-light p-4 rounded-lg slide-up">
+                            <div class="text-primary text-2xl mb-2">
+                                <i class="fas fa-globe"></i>
+                            </div>
+                            <h3 class="font-bold mb-2">Présence internationale</h3>
+                            <p class="text-sm text-gray-600">15 pays, 3 continents</p>
+                        </div>
+                        <div class="bg-light p-4 rounded-lg slide-up">
+                            <div class="text-primary text-2xl mb-2">
+                                <i class="fas fa-briefcase"></i>
+                            </div>
+                            <h3 class="font-bold mb-2">Services financiers inclusifs</h3>
+                            <p class="text-sm text-gray-600">Adaptés à tous les budgets</p>
+                        </div>
+                        <div class="bg-light p-4 rounded-lg slide-up">
+                            <div class="text-primary text-2xl mb-2">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h3 class="font-bold mb-2">Éducation en continu</h3>
+                            <p class="text-sm text-gray-600">Formations et coaching</p>
+                        </div>
+                    </div>
+                    
+                    <a href="#" class="inline-block bg-primary text-white px-6 py-3 rounded-full font-bold hover:bg-opacity-90 transition slide-up">
+                        En savoir plus sur GES
+                    </a>
+                </div>
+                
+                <div class="lg:w-1/2 relative fade-in">
+                    <div class="relative overflow-hidden rounded-xl shadow-2xl slide-up">
+                        <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80" alt="Équipe GES" class="w-full h-auto">
+                        <div class="absolute inset-0 bg-gradient-to-t from-dark to-transparent opacity-70"></div>
+                        <div class="absolute bottom-0 left-0 p-6 text-white">
+                            <h3 class="font-serif text-2xl font-bold">Notre équipe d'experts</h3>
+                            <p>Professionnels certifiés à votre service</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Services -->
+    <section id="services" class="py-20 bg-light">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4 text-dark slide-up">
+                    Nos Services
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto slide-up">
+                    Des solutions complètes pour gérer et faire croître votre capital
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Carte Service 1 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 service-card fade-in">
+                    <div class="h-48 bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
+                        <i class="fas fa-chart-line text-white text-5xl slide-up"></i>
+                    </div>
+                    <div class="p-6 slide-up">
+                        <h3 class="font-bold text-xl mb-3">Trading d'actions</h3>
+                        <p class="text-gray-600 mb-4">Accès aux marchés mondiaux avec des outils professionnels.</p>
+                        <a href="#" class="text-primary font-medium hover:underline inline-flex items-center">
+                            Découvrir
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Carte Service 2 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 service-card fade-in">
+                    <div class="h-48 bg-gradient-to-r from-secondary to-primary flex items-center justify-center">
+                        <i class="fas fa-landmark text-white text-5xl slide-up"></i>
+                    </div>
+                    <div class="p-6 slide-up">
+                        <h3 class="font-bold text-xl mb-3">Obligations</h3>
+                        <p class="text-gray-600 mb-4">Investissements sécurisés avec des rendements prévisibles.</p>
+                        <a href="#" class="text-primary font-medium hover:underline inline-flex items-center">
+                            Découvrir
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Carte Service 3 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 service-card fade-in">
+                    <div class="h-48 bg-gradient-to-r from-primary to-secondary flex items-center justify-center">
+                        <i class="fas fa-piggy-bank text-white text-5xl slide-up"></i>
+                    </div>
+                    <div class="p-6 slide-up">
+                        <h3 class="font-bold text-xl mb-3">Placements</h3>
+                        <p class="text-gray-600 mb-4">Solutions diversifiées adaptées à vos objectifs.</p>
+                        <a href="#" class="text-primary font-medium hover:underline inline-flex items-center">
+                            Découvrir
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Carte Service 4 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 service-card fade-in">
+                    <div class="h-48 bg-gradient-to-r from-secondary to-primary flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-white text-5xl slide-up"></i>
+                    </div>
+                    <div class="p-6 slide-up">
+                        <h3 class="font-bold text-xl mb-3">Éducation & Coaching</h3>
+                        <p class="text-gray-600 mb-4">Formations et accompagnement personnalisé.</p>
+                        <a href="#" class="text-primary font-medium hover:underline inline-flex items-center">
+                            Découvrir
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Notre Différence -->
+    <section id="difference" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4 text-dark slide-up">
+                    Notre différence
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto slide-up">
+                    Pourquoi des milliers de clients nous font confiance
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+                <div class="text-center p-6 fade-in">
+                    <div class="w-20 h-20 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4 slide-up">
+                        <i class="fas fa-lock text-primary text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2 slide-up">Sécurité des investissements</h3>
+                    <p class="text-gray-600 slide-up">Protection avancée de vos actifs et données.</p>
+                </div>
+                
+                <div class="text-center p-6 fade-in">
+                    <div class="w-20 h-20 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4 slide-up">
+                        <i class="fas fa-chalkboard-teacher text-primary text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2 slide-up">Formation continue</h3>
+                    <p class="text-gray-600 slide-up">Webinaires, tutoriels et analyses mensuelles.</p>
+                </div>
+                
+                <div class="text-center p-6 fade-in">
+                    <div class="w-20 h-20 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4 slide-up">
+                        <i class="fas fa-headset text-primary text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2 slide-up">Support multicanal</h3>
+                    <p class="text-gray-600 slide-up">Assistance 24/7 par chat, email et téléphone.</p>
+                </div>
+                
+                <div class="text-center p-6 fade-in">
+                    <div class="w-20 h-20 bg-primary bg-opacity-10 rounded-full flex items-center justify-center mx-auto mb-4 slide-up">
+                        <i class="fas fa-credit-card text-primary text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold text-xl mb-2 slide-up">Paiements sécurisés</h3>
+                    <p class="text-gray-600 slide-up">Transactions internationales rapides et fiables.</p>
+                </div>
+            </div>
+            
+            <div class="text-center fade-in">
+                <a href="#contact" class="inline-block bg-primary text-white px-8 py-4 rounded-full font-bold hover:bg-opacity-90 transition text-lg slide-up">
+                    Prendre rendez-vous avec un expert
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Résultats -->
+    <section id="results" class="py-20 bg-light">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4 text-dark slide-up">
+                    Cas concrets et réussites
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto slide-up">
+                    Découvrez comment nous avons aidé nos clients à atteindre leurs objectifs
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                <!-- Carte Résultat 1 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden fade-in">
+                    <div class="h-48 bg-[url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')] bg-cover bg-center slide-up"></div>
+                    <div class="p-6 slide-up">
+                        <div class="flex items-center mb-4">
+                            <span class="bg-primary text-white text-xs font-bold px-2 py-1 rounded mr-2">Finance</span>
+                            <span class="text-gray-500 text-sm">2023</span>
+                        </div>
+                        <h3 class="font-bold text-xl mb-3">Croissance de portefeuille</h3>
+                        <p class="text-gray-600 mb-4">Augmentation de 42% en 18 mois grâce à une stratégie diversifiée.</p>
+                        <div class="flex items-center">
+                            <span class="text-primary font-bold mr-2">+42%</span>
+                            <span class="text-gray-500 text-sm">rendement annuel</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Carte Résultat 2 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden fade-in">
+                    <div class="h-48 bg-[url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')] bg-cover bg-center slide-up"></div>
+                    <div class="p-6 slide-up">
+                        <div class="flex items-center mb-4">
+                            <span class="bg-secondary text-white text-xs font-bold px-2 py-1 rounded mr-2">Entreprise</span>
+                            <span class="text-gray-500 text-sm">2022</span>
+                        </div>
+                        <h3 class="font-bold text-xl mb-3">Optimisation fiscale</h3>
+                        <p class="text-gray-600 mb-4">Réduction de 28% de la charge fiscale pour une PME familiale.</p>
+                        <div class="flex items-center">
+                            <span class="text-primary font-bold mr-2">-28%</span>
+                            <span class="text-gray-500 text-sm">d'impôts</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Carte Résultat 3 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden fade-in">
+                    <div class="h-48 bg-[url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2111&q=80')] bg-cover bg-center slide-up"></div>
+                    <div class="p-6 slide-up">
+                        <div class="flex items-center mb-4">
+                            <span class="bg-primary text-white text-xs font-bold px-2 py-1 rounded mr-2">Retraite</span>
+                            <span class="text-gray-500 text-sm">2023</span>
+                        </div>
+                        <h3 class="font-bold text-xl mb-3">Planification retraite</h3>
+                        <p class="text-gray-600 mb-4">Capital retraite multiplié par 3 en 10 ans avec risque minimal.</p>
+                        <div class="flex items-center">
+                            <span class="text-primary font-bold mr-2">300%</span>
+                            <span class="text-gray-500 text-sm">croissance</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center fade-in">
+                <a href="#" class="hidden inline-block border-2 border-primary text-primary px-8 py-3 rounded-full font-bold hover:bg-primary hover:text-white transition slide-up">
+                    Voir plus de résultats
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Témoignages -->
+    <section id="temoignages" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4 text-dark slide-up">
+                    Ce que nos clients disent de nous
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto slide-up">
+                    La satisfaction client est au cœur de notre approche
+                </p>
+            </div>
+            
+            <div class="max-w-5xl mx-auto fade-in">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Témoignage 1 -->
+                    <div class="bg-light p-6 rounded-xl slide-up">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                                <img src="https://randomuser.me/api/portraits/women/43.jpg" alt="Marie D." class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Marie D.</h4>
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 italic">
+                            "Grâce à GES, j'ai pu prendre le contrôle de mes finances et préparer sereinement ma retraite. Les conseillers sont à l'écoute et très compétents."
+                        </p>
+                    </div>
+                    
+                    <!-- Témoignage 2 -->
+                    <div class="bg-light p-6 rounded-xl slide-up">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Pierre L." class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Pierre L.</h4>
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 italic">
+                            "En tant qu'entrepreneur, GES m'a aidé à optimiser mes investissements tout en réduisant mes risques. Une vraie valeur ajoutée !"
+                        </p>
+                    </div>
+                    
+                    <!-- Témoignage 3 -->
+                    <div class="bg-light p-6 rounded-xl slide-up">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                                <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Sophie T." class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Sophie T.</h4>
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 italic">
+                            "Les formations de GES sont exceptionnelles. J'ai enfin compris comment fonctionnent les marchés financiers et je peux investir en toute confiance."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Blog -->
+    <section id="blog" class="py-20 bg-light">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16 fade-in">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4 text-dark slide-up">
+                    Ressources & Conseils GES
+                </h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto slide-up">
+                    Nos dernières analyses et articles éducatifs
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                <!-- Article 1 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden fade-in">
+                    <div class="h-48 bg-[url('https://images.unsplash.com/photo-1642790559318-6c9a6a539578?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')] bg-cover bg-center slide-up"></div>
+                    <div class="p-6 slide-up">
+                        <span class="text-sm text-gray-500">15 juin 2023 • 5 min de lecture</span>
+                        <h3 class="font-bold text-xl my-3">Les tendances du marché en 2023</h3>
+                        <p class="text-gray-600 mb-4">Analyse des opportunités d'investissement cette année dans un contexte économique particulier.</p>
+                        <a href="#" class="text-primary font-medium hover:underline inline-flex items-center">
+                            Lire l'article
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Article 2 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden fade-in">
+                    <div class="h-48 bg-[url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')] bg-cover bg-center slide-up"></div>
+                    <div class="p-6 slide-up">
+                        <span class="text-sm text-gray-500">2 juin 2023 • 8 min de lecture</span>
+                        <h3 class="font-bold text-xl my-3">Diversification : clé de la résilience</h3>
+                        <p class="text-gray-600 mb-4">Comment construire un portefeuille résistant aux fluctuations des marchés.</p>
+                        <a href="#" class="text-primary font-medium hover:underline inline-flex items-center">
+                            Lire l'article
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Article 3 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden fade-in">
+                    <div class="h-48 bg-[url('https://images.unsplash.com/photo-1535320903710-d993d3d77d29?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')] bg-cover bg-center slide-up"></div>
+                    <div class="p-6 slide-up">
+                        <span class="text-sm text-gray-500">20 mai 2023 • 6 min de lecture</span>
+                        <h3 class="font-bold text-xl my-3">Cryptomonnaies : risques et opportunités</h3>
+                        <p class="text-gray-600 mb-4">Notre analyse des actifs numériques dans une stratégie d'investissement équilibrée.</p>
+                        <a href="#" class="text-primary font-medium hover:underline inline-flex items-center">
+                            Lire l'article
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+           
+        </div>
+    </section>
+
+    <!-- Section Newsletter -->
+    <section id="newsletter" class="py-20 bg-gradient-to-r from-primary to-secondary clip-polygon">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center fade-in">
+                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-6 text-white slide-up">
+                    Recevez nos conseils d'experts directement par email
+                </h2>
+                <p class="text-xl text-white opacity-90 mb-8 slide-up">
+                    Abonnez-vous à notre newsletter pour des analyses exclusives et des opportunités d'investissement.
+                </p>
+                
+                <form class="flex flex-col sm:flex-row gap-4 max-w-xl mx-auto slide-up">
+                    <input type="email" placeholder="Votre email" class="flex-grow px-4 py-3 rounded-full focus:outline-none focus:ring-2 focus:ring-white">
+                    <button type="submit" class="bg-white text-primary px-6 py-3 rounded-full font-bold hover:bg-opacity-90 transition whitespace-nowrap">
+                        S'abonner
+                    </button>
+                </form>
+                
+                <p class="text-sm text-white opacity-70 mt-4 slide-up">
+                    Zéro spam. Désinscription en un clic. Nous respectons votre vie privée.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section Contact -->
+    
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row gap-12">
+                <div class="lg:w-1/2 fade-in">
+                    <h2 class="text-3xl md:text-4xl font-serif font-bold mb-6 text-dark slide-up">
+                        Besoin de conseils personnalisés ?
+                    </h2>
+                    <p class="text-lg text-gray-700 mb-8 slide-up">
+                        Nos conseillers sont disponibles pour vous accompagner dans vos projets financiers. Contactez-nous par le moyen de votre choix.
+                    </p>
+                    
+                    <div class="space-y-6 mb-8">
+                        <div class="flex items-start slide-up">
+                            <div class="bg-primary bg-opacity-10 p-3 rounded-full mr-4">
+                                <i class="fas fa-comments text-primary"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1">Chat en direct</h3>
+                                <p class="text-gray-600">Disponible 24/7 pour répondre à vos questions</p>
+                                <a href="#" class="text-primary font-medium hover:underline inline-flex items-center mt-2">
+                                    Lancer le chat
+                                    <i class="fas fa-arrow-right ml-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start slide-up">
+                            <div class="bg-primary bg-opacity-10 p-3 rounded-full mr-4">
+                                <i class="fab fa-whatsapp text-primary"></i>
+                            </div>
+                            <div>  
+                                <h3 class="font-bold text-lg mb-1">WhatsApp</h3>
+                                <p class="text-gray-600">Échangez directement avec un conseiller</p>
+                                <a href="#" class="text-primary font-medium hover:underline inline-flex items-center mt-2">
+                                    Envoyer un message
+                                    <i class="fas fa-arrow-right ml-2"></i>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start slide-up">
+                            <div class="bg-primary bg-opacity-10 p-3 rounded-full mr-4">
+                                <i class="fas fa-phone-alt text-primary"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg mb-1">Téléphone</h3>
+                                <p class="text-gray-600">+509</p>
+                                <p class="text-gray-600">Lun-Ven : 9h-18h</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+              <section id="contact" class="py-20 bg-white"></section>  
+                <div class="lg:w-1/2 fade-in">
+                    <div class="bg-light p-8 rounded-xl shadow-md slide-up">
+                        <h3 class="font-bold text-2xl mb-6">Envoyez-nous un message</h3>
+                        
+                        <form>
+                            <div class="mb-4">
+                                <label for="name" class="block text-gray-700 mb-2">Nom complet</label>
+                                <input type="text" id="name" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="email" class="block text-gray-700 mb-2">Email</label>
+                                <input type="email" id="email" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            
+                            <div class="mb-4">
+                                <label for="message" class="block text-gray-700 mb-2">Message</label>
+                                <textarea id="message" rows="4" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="captcha" class="mr-2">
+                                    <label for="captcha" class="text-gray-700">Je ne suis pas un robot</label>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="w-full bg-primary text-white px-6 py-3 rounded-lg font-bold hover:bg-opacity-90 transition">
+                                Envoyer le message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-20 pb-10 clip-polygon-footer">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <!-- Colonne 1 -->
+                <div class="fade-in">
+                    <h3 class="font-serif text-xl font-bold mb-4 slide-up">À propos</h3>
+                    <ul class="space-y-2 slide-up">
+                        <li><a href="#" class="hover:text-primary transition">Mission</a></li>
+                        <li><a href="#" class="hover:text-primary transition">Vision</a></li>
+                        <li><a href="#" class="hover:text-primary transition">Histoire</a></li>
+                        <li><a href="#" class="hover:text-primary transition">Équipe</a></li>
+                        <li><a href="#" class="hover:text-primary transition">Carrières</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Colonne 2 -->
+                <div class="fade-in">
+                    <h3 class="font-serif text-xl font-bold mb-4 slide-up">Liens utiles</h3>
+                    <ul class="space-y-2 slide-up">
+                        <li><a href="#" class="hover:text-primary transition">Accueil</a></li>
+                        <li><a href="#" class="hover:text-primary transition">Services</a></li>
+                        <li><a href="#" class="hover:text-primary transition">Boutique</a></li>
+                        <li><a href="#" class="hover:text-primary transition">FAQ</a></li>
+                        <li><a href="#" class="hover:text-primary transition">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Colonne 3 -->
+                <div class="fade-in">
+                    <h3 class="font-serif text-xl font-bold mb-4 slide-up">Contact</h3>
+                    <ul class="space-y-2 slide-up">
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mr-2 mt-1 text-primary"></i>
+                            <span>contact@ges-finance.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt mr-2 mt-1 text-primary"></i>
+                            <span>+509</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mr-2 mt-1 text-primary"></i>
+                            <span>Port-au-Prince, haiti</span>
+                        </li>
+                    </ul>
+                    <a href="#" class="inline-block mt-4 text-primary hover:underline slide-up">
+                        Voir sur Google Maps
+                    </a>
+                </div>
+                
+                <!-- Colonne 4 -->
+                <div class="fade-in">
+                    <h3 class="font-serif text-xl font-bold mb-4 slide-up">Suivez-nous</h3>
+                    <div class="flex flex-wrap gap-3 mb-6 slide-up">
+                        <a href="#" class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-primary transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-primary transition">
+                            <i class="fab fa-tiktok"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-primary transition">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-primary transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-primary transition">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-primary transition">
+                            <i class="fab fa-threads"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-primary transition">
+                            <i class="fab fa-x-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-primary transition">
+                            <i class="fab fa-snapchat"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-primary transition">
+                            <i class="fab fa-pinterest"></i>
+                        </a>
+                    </div>
+                    
+                    <div class="slide-up">
+                        <h4 class="font-bold mb-2">Langue</h4>
+                        <select class="bg-dark border border-white border-opacity-20 rounded px-3 py-2 focus:outline-none focus:ring-1 focus:ring-primary">
+                            <option>Français</option>
+                            <option>English</option>
+                            <option>Español</option>
+                            <option>Deutsch</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-t border-white border-opacity-20 pt-8 fade-in">
+                <div class="flex flex-col md:flex-row justify-between items-center slide-up">
+                    <div class="flex items-center mb-4 md:mb-0">
+                        <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white font-bold text-lg mr-2">
+                            GES
+                        </div>
+                        <span class="text-lg font-bold">Global Economic Services</span>
+                    </div>
+                    
+                    <div class="text-sm text-white text-opacity-70 text-center md:text-right">
+                        <p>© 2023 GES. Tous droits réservés.</p>
+                        <div class="flex flex-wrap justify-center md:justify-end gap-4 mt-2">
+                            <a href="#" class="hover:text-primary transition">Mentions légales</a>
+                            <a href="#" class="hover:text-primary transition">Politique de confidentialité</a>
+                            <a href="#" class="hover:text-primary transition">Conditions générales</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bouton chat flottant -->
+    <div class="fixed bottom-6 right-6 z-50 fade-in">
+        <button class="w-16 h-16 bg-primary rounded-full shadow-lg flex items-center justify-center text-white hover:bg-opacity-90 transition">
+            <i class="fas fa-comment-dots text-2xl"></i>
+        </button>
+    </div>
+
+    <!-- Scripts JavaScript -->
+    <script>
+        // Menu mobile
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+        
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('main-header');
+            if (window.scrollY > 50) {
+                header.classList.add('header-scrolled');
+            } else {
+                header.classList.remove('header-scrolled');
+            }
+        });
+        
+        // Animation au scroll
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.fade-in, .slide-up');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.2;
+                
+                if (elementPosition < screenPosition) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+        
+        // Initialisation des animations
+        window.addEventListener('load', animateOnScroll);
+        window.addEventListener('scroll', animateOnScroll);
+        
+        // Animations avec Anime.js
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animation du hero
+            anime({
+                targets: '#hero .slide-up',
+                translateY: [50, 0],
+                opacity: [0, 1],
+                duration: 1000,
+                delay: anime.stagger(200),
+                easing: 'easeOutExpo'
+            });
+            
+            // Animation des cartes services au survol
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    anime({
+                        targets: this,
+                        scale: 1.02,
+                        duration: 300,
+                        easing: 'easeInOutQuad'
+                    });
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    anime({
+                        targets: this,
+                        scale: 1,
+                        duration: 300,
+                        easing: 'easeInOutQuad'
+                    });
+                });
+            });
+            
+            // Animation du bouton CTA principal
+            const ctaButton = document.querySelector('#hero a.bg-white');
+            if (ctaButton) {
+                ctaButton.addEventListener('mouseenter', function() {
+                    anime({
+                        targets: this,
+                        scale: 1.05,
+                        duration: 200,
+                        easing: 'easeInOutQuad'
+                    });
+                });
+                
+                ctaButton.addEventListener('mouseleave', function() {
+                    anime({
+                        targets: this,
+                        scale: 1,
+                        duration: 200,
+                        easing: 'easeInOutQuad'
+                    });
+                });
+            }
+        });
+    </script>
+    
+    <!-- Intégrations analytiques -->
+    <script>
+        // Google Analytics
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-XXXXX-Y');
+        
+        // Facebook Pixel
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', 'XXXXXXXXXXXXXXX');
+        fbq('track', 'PageView');
+    </script>
+</body>
+</html>
