@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GES S.A. | Société de Services et d'Investissements</title>
-    
+
     <!-- CDN Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- CDN Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- CDN Chart.js pour graphiques -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <!-- CDN Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- CDN Anime.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
-    
+
     <!-- Configuration Tailwind -->
     <script>
         tailwind.config = {
@@ -29,16 +35,43 @@
                         secondary: '#3E92CC',
                         accent: '#FF6B35',
                         light: '#F8F9FA',
-                        dark: '#1E1E24'
+                        dark: '#1E1E24',
+                        success: '#06D6A0',
+                        warning: '#FFD166',
+                        danger: '#EF476F'
                     },
                     fontFamily: {
                         'sans': ['Inter', 'system-ui', 'sans-serif'],
                         'serif': ['Playfair Display', 'serif']
                     },
+                    fontSize: {
+                        'xs': '0.75rem',
+                        'sm': '0.875rem',
+                        'base': '1rem',
+                        'lg': '1.125rem',
+                        'xl': '1.25rem',
+                        '2xl': '1.5rem',
+                        '3xl': '1.875rem',
+                        '4xl': '2.25rem',
+                        '5xl': '3rem',
+                        '6xl': '3.75rem',
+                        '7xl': '4.5rem'
+                    },
+                    spacing: {
+                        '18': '4.5rem',
+                        '88': '22rem',
+                        '100': '25rem',
+                        '120': '30rem',
+                    },
                     animation: {
-                        'fade-in': 'fadeIn 0.8s ease-in-out',
-                        'slide-up': 'slideUp 0.6s ease-out',
-                        'scale-in': 'scaleIn 0.5s ease-out'
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                        'slide-down': 'slideDown 0.5s ease-out',
+                        'scale-in': 'scaleIn 0.3s ease-out',
+                        'slide-in-right': 'slideInRight 0.4s ease-out',
+                        'slide-in-left': 'slideInLeft 0.4s ease-out',
+                        'pulse-slow': 'pulse 3s infinite',
+                        'bounce-slow': 'bounce 2s infinite',
                     },
                     keyframes: {
                         fadeIn: {
@@ -49,34 +82,64 @@
                             '0%': { transform: 'translateY(20px)', opacity: '0' },
                             '100%': { transform: 'translateY(0)', opacity: '1' }
                         },
+                        slideDown: {
+                            '0%': { transform: 'translateY(-20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        },
                         scaleIn: {
-                            '0%': { transform: 'scale(0.95)', opacity: '0' },
+                            '0%': { transform: 'scale(0.9)', opacity: '0' },
                             '100%': { transform: 'scale(1)', opacity: '1' }
+                        },
+                        slideInRight: {
+                            '0%': { transform: 'translateX(20px)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' }
+                        },
+                        slideInLeft: {
+                            '0%': { transform: 'translateX(-20px)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' }
                         }
                     }
                 }
             }
         }
     </script>
-    
+
     <style>
-        /* Styles CSS personnalisés */
+        /* Styles CSS personnalisés - Mobile First */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         html {
             scroll-behavior: smooth;
+            font-size: 16px;
         }
-        
+
         body {
             font-family: 'Inter', sans-serif;
             color: #1E1E24;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        
+
+        /* Améliorations typographiques pour mobile */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            line-height: 1.2;
+            font-weight: 700;
+        }
+
+        p {
+            line-height: 1.6;
+        }
+
         /* Style pour le splash screen */
         .splash-screen {
             position: fixed;
@@ -90,225 +153,587 @@
             align-items: center;
             background: linear-gradient(135deg, #0A2463 0%, #3E92CC 100%);
         }
-        
+
         /* Masquer le contenu principal initialement */
         .main-content {
             opacity: 0;
             transition: opacity 0.5s ease-in-out;
         }
-        
+
         /* Animation pour le menu burger */
         .burger-line {
             transition: all 0.3s ease;
         }
-        
+
         .burger-active .burger-line:nth-child(1) {
             transform: rotate(45deg) translate(6px, 6px);
         }
-        
+
         .burger-active .burger-line:nth-child(2) {
             opacity: 0;
         }
-        
+
         .burger-active .burger-line:nth-child(3) {
             transform: rotate(-45deg) translate(6px, -6px);
         }
-        
+
         /* Animation pour les cartes de services */
-        .service-card:hover {
-            transform: translateY(-10px);
-            transition: transform 0.3s ease;
+        .service-card {
+            transition: all 0.3s ease;
         }
-        
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
         /* Animation pour les logos des filiales */
         .partner-logo {
             transition: all 0.3s ease;
         }
-        
+
         .partner-logo:hover {
-            transform: scale(1.1);
+            transform: scale(1.05);
+        }
+
+        /* Style pour les graphiques */
+        .chart-container {
+            position: relative;
+            width: 100%;
+        }
+
+        /* Styles pour les modales */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 1rem;
+            width: 100%;
+            max-width: 900px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 50%;
+            background: #f1f5f9;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: #e2e8f0;
+            transform: rotate(90deg);
+        }
+
+        /* Styles pour les onglets dans les modales */
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            background: transparent;
+            color: #64748b;
+            cursor: pointer;
+        }
+
+        .tab-button.active {
+            background: #0A2463;
+            color: white;
+        }
+
+        .tab-button:hover:not(.active) {
+            background: #f1f5f9;
+            color: #0A2463;
+        }
+
+        /* Styles responsives pour les tableaux */
+        .responsive-table {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Améliorations pour les petits écrans */
+        @media (max-width: 640px) {
+            .stat-card {
+                padding: 1rem;
+            }
+
+            .modal-content {
+                border-radius: 0.75rem;
+                max-height: 85vh;
+            }
+
+            .tab-button {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        /* Optimisation pour les très petits écrans */
+        @media (max-width: 400px) {
+            html {
+                font-size: 14px;
+            }
+
+            .modal-content {
+                padding: 1rem;
+            }
+        }
+
+        /* Animation pour les éléments au défilement */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .animate-on-scroll.animated {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
-<body class="bg-light">
+
+<body class="bg-light text-dark">
     <!-- Splash Screen -->
     <div id="splashScreen" class="splash-screen">
         <div class="text-center px-6">
             <!-- Logo placeholder avec style professionnel -->
-            <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl">
-                <span class="text-3xl font-bold text-primary"><img src="logoges.png" alt="Welcome" class="full-img">    </span>
+            <div
+                class="w-24 h-24 md:w-32 md:h-32 bg-white rounded-full flex items-center justify-center mx-auto mb-6 md:mb-8 shadow-2xl">
+                <span class="text-2xl md:text-3xl font-bold text-primary">
+                                <img 
+            src="logoges.png" 
+            alt="Logo Dens production"
+            width="60"
+            height="60"
+            class="w-12 h-12 sm:w-14 sm:h-14 object-contain drop-shadow-lg transition-transform duration-300 hover:scale-105"
+          />
+             </span>
             </div>
-            
-            <h1 class="text-4xl md:text-5xl font-bold text-white mb-4 font-serif animate-scale-in">GES S.A.</h1>
-            <p class="text-xl text-white/90 max-w-md mx-auto mb-8 animate-fade-in">
+
+            <h1 class="text-3xl md:text-5xl font-bold text-white mb-3 md:mb-4 font-serif animate-scale-in">GES S.A.</h1>
+            <p class="text-lg md:text-xl text-white/90 max-w-md mx-auto mb-6 md:mb-8 animate-fade-in">
                 Société de Services • Investissements • Développement Durable
             </p>
             <div class="w-16 h-1 bg-accent mx-auto animate-slide-up"></div>
         </div>
     </div>
-    
+
     <!-- Contenu principal (masqué initialement) -->
     <div id="mainContent" class="main-content">
         <!-- Header / Navigation -->
         <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm">
-            <div class="container mx-auto px-4 py-4">
+            <div class="container mx-auto px-4 py-3 md:py-4">
                 <div class="flex justify-between items-center">
                     <!-- Logo -->
                     <div class="flex items-center">
-                        <div class="w-10 h-10 bg-blue rounded-lg flex items-center justify-center mr-3">
-                            <span class="text-white font-bold"><img src="logoges.png" alt="Welcome" class="full-img">  </span>
+                        <div
+                            class="w-8 h-8 md:w-10 md:h-10 rounded-lg flex items-center justify-center mr-2 md:mr-3">
+                            <span class="text-white font-bold text-sm md:text-base">
+                                 <img 
+            src="logoges.png" 
+            alt="Logo Dens production"
+            width="60"
+            height="60"
+            class="w-12 h-12 sm:w-14 sm:h-14 object-contain drop-shadow-lg transition-transform duration-300 hover:scale-105"
+          />
+                            </span>
                         </div>
                         <div>
-                            <h1 class="text-xl font-bold text-primary">GES S.A.</h1>
+                            <h1 class="text-lg md:text-xl font-bold text-primary">GES S.A.</h1>
                             <p class="text-xs text-secondary">Société de Services</p>
                         </div>
                     </div>
-                    
+
                     <!-- Menu desktop -->
-                    <nav class="hidden md:flex space-x-8">
-                        <a href="#accueil" class="text-dark hover:text-primary font-medium transition-colors">Accueil</a>
-                        <a href="#apropos" class="text-dark hover:text-primary font-medium transition-colors">À propos</a>
-                        <a href="#services" class="text-dark hover:text-primary font-medium transition-colors">Services</a>
-                        <a href="#valeurs" class="text-dark hover:text-primary font-medium transition-colors">Valeurs</a>
-                        <a href="#filiales" class="text-dark hover:text-primary font-medium transition-colors">Filiales</a>
-                        <a href="#contact" class="text-dark hover:text-primary font-medium transition-colors">Contact</a>
+                    <nav class="hidden md:flex space-x-6 lg:space-x-8">
+                        <a href="#accueil"
+                            class="text-dark hover:text-primary font-medium transition-colors text-sm lg:text-base">Accueil</a>
+                        <a href="#apropos"
+                            class="text-dark hover:text-primary font-medium transition-colors text-sm lg:text-base">À
+                            propos</a>
+                        <a href="#indice"
+                            class="text-dark hover:text-primary font-medium transition-colors text-sm lg:text-base">Indice
+                            GES</a>
+                        <a href="#services"
+                            class="text-dark hover:text-primary font-medium transition-colors text-sm lg:text-base">Services</a>
+                        <a href="#filiales"
+                            class="text-dark hover:text-primary font-medium transition-colors text-sm lg:text-base">Filiales</a>
+                        <a href="#contact"
+                            class="text-dark hover:text-primary font-medium transition-colors text-sm lg:text-base">Contact</a>
                     </nav>
-                    
+
                     <!-- CTA desktop -->
                     <div class="hidden md:flex">
-                        <a href="#contact" class="bg-primary text-white px-6 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors shadow-md">
+                        <a href="#contact"
+                            class="bg-primary text-white px-4 py-2 lg:px-6 lg:py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors shadow-md text-sm lg:text-base">
                             Nous contacter
                         </a>
                     </div>
-                    
+
                     <!-- Menu burger mobile -->
-                    <button id="burgerBtn" class="md:hidden flex flex-col space-y-1.5">
+                    <button id="burgerBtn" class="md:hidden flex flex-col space-y-1.5 p-2">
                         <span class="burger-line w-6 h-0.5 bg-dark"></span>
                         <span class="burger-line w-6 h-0.5 bg-dark"></span>
                         <span class="burger-line w-6 h-0.5 bg-dark"></span>
                     </button>
                 </div>
-                
+
                 <!-- Menu mobile -->
                 <div id="mobileMenu" class="hidden md:hidden mt-4 pb-4 border-t border-gray-100 pt-4">
-                    <div class="flex flex-col space-y-4">
-                        <a href="#accueil" class="text-dark hover:text-primary font-medium transition-colors py-2">Accueil</a>
-                        <a href="#apropos" class="text-dark hover:text-primary font-medium transition-colors py-2">À propos</a>
-                        <a href="#services" class="text-dark hover:text-primary font-medium transition-colors py-2">Services</a>
-                        <a href="#valeurs" class="text-dark hover:text-primary font-medium transition-colors py-2">Valeurs</a>
-                        <a href="#filiales" class="text-dark hover:text-primary font-medium transition-colors py-2">Filiales</a>
-                        <a href="#contact" class="text-dark hover:text-primary font-medium transition-colors py-2">Contact</a>
-                        <a href="#contact" class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors text-center mt-2">
+                    <div class="flex flex-col space-y-3">
+                        <a href="#accueil"
+                            class="text-dark hover:text-primary font-medium transition-colors py-2">Accueil</a>
+                        <a href="#apropos" class="text-dark hover:text-primary font-medium transition-colors py-2">À
+                            propos</a>
+                        <a href="#indice" class="text-dark hover:text-primary font-medium transition-colors py-2">Indice
+                            GES</a>
+                        <a href="#services"
+                            class="text-dark hover:text-primary font-medium transition-colors py-2">Services</a>
+                        <a href="#filiales"
+                            class="text-dark hover:text-primary font-medium transition-colors py-2">Filiales</a>
+                        <a href="#contact"
+                            class="text-dark hover:text-primary font-medium transition-colors py-2">Contact</a>
+                        <a href="#contact"
+                            class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors text-center mt-2">
                             Nous contacter
                         </a>
                     </div>
                 </div>
             </div>
         </header>
-        
+
         <!-- Hero Section -->
-        <section id="accueil" class="py-16 md:py-24 bg-gradient-to-br from-primary via-primary/95 to-secondary">
+        <section id="accueil" class="py-12 md:py-24 bg-gradient-to-br from-primary via-primary/95 to-secondary">
             <div class="container mx-auto px-4">
                 <div class="max-w-4xl mx-auto text-center text-white">
-                    <h2 class="text-4xl md:text-6xl font-bold mb-6 font-serif animate-fade-in">
+                    <h2 class="text-3xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 font-serif animate-on-scroll">
                         Investir pour un <span class="text-accent">développement durable</span>
                     </h2>
-                    <p class="text-xl md:text-2xl mb-10 opacity-90 animate-slide-up">
-                        Société de Services spécialisée en gestion et finance, œuvrant pour le développement économique, social et écologique.
+                    <p class="text-lg md:text-xl lg:text-2xl mb-8 md:mb-10 opacity-90 animate-on-scroll">
+                        Société de Services spécialisée en gestion et finance, œuvrant pour le développement économique,
+                        social et écologique.
                     </p>
-                    <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-6 animate-scale-in">
-                        <a href="#services" class="bg-accent text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-accent/90 transition-colors shadow-lg">
-                            Découvrir nos services
+                    <div
+                        class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-6 animate-on-scroll">
+                        <a href="#indice"
+                            class="bg-accent text-white px-6 py-3 md:px-8 md:py-4 rounded-lg font-bold text-base md:text-lg hover:bg-accent/90 transition-colors shadow-lg">
+                            Voir l'Indice GES
                         </a>
-                        <a href="#contact" class="bg-white/20 backdrop-blur-sm text-white px-8 py-4 rounded-lg font-bold text-lg hover:bg-white/30 transition-colors border border-white/30">
+                        <a href="#contact"
+                            class="bg-white/20 backdrop-blur-sm text-white px-6 py-3 md:px-8 md:py-4 rounded-lg font-bold text-base md:text-lg hover:bg-white/30 transition-colors border border-white/30">
                             Demander un devis
                         </a>
                     </div>
                 </div>
-                
+
                 <!-- Statistiques -->
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mt-20 max-w-4xl mx-auto">
-                    <div class="text-center text-white">
-                        <div class="text-4xl md:text-5xl font-bold mb-2">10+</div>
-                        <div class="text-white/80">Années d'expérience</div>
+                <div
+                    class="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6 mt-12 md:mt-20 max-w-4xl mx-auto animate-on-scroll">
+                    <div class="stat-card bg-white/10 backdrop-blur-sm rounded-xl p-4 md:p-6 text-center text-white">
+                        <div class="text-2xl md:text-4xl lg:text-5xl font-bold mb-1 md:mb-2">10+</div>
+                        <div class="text-white/80 text-sm md:text-base">Années d'expérience</div>
                     </div>
-                    <div class="text-center text-white">
-                        <div class="text-4xl md:text-5xl font-bold mb-2">50+</div>
-                        <div class="text-white/80">Projets réalisés</div>
+                    <div class="stat-card bg-white/10 backdrop-blur-sm rounded-xl p-4 md:p-6 text-center text-white">
+                        <div class="text-2xl md:text-4xl lg:text-5xl font-bold mb-1 md:mb-2">50+</div>
+                        <div class="text-white/80 text-sm md:text-base">Projets réalisés</div>
                     </div>
-                    <div class="text-center text-white">
-                        <div class="text-4xl md:text-5xl font-bold mb-2">100+</div>
-                        <div class="text-white/80">Clients satisfaits</div>
+                    <div class="stat-card bg-white/10 backdrop-blur-sm rounded-xl p-4 md:p-6 text-center text-white">
+                        <div class="text-2xl md:text-4xl lg:text-5xl font-bold mb-1 md:mb-2">100+</div>
+                        <div class="text-white/80 text-sm md:text-base">Clients satisfaits</div>
                     </div>
-                    <div class="text-center text-white">
-                        <div class="text-4xl md:text-5xl font-bold mb-2">15+</div>
-                        <div class="text-white/80">Entreprises filiales</div>
+                    <div class="stat-card bg-white/10 backdrop-blur-sm rounded-xl p-4 md:p-6 text-center text-white">
+                        <div class="text-2xl md:text-4xl lg:text-5xl font-bold mb-1 md:mb-2">25+</div>
+                        <div class="text-white/80 text-sm md:text-base">Entreprises filiales</div>
                     </div>
                 </div>
             </div>
         </section>
-        
-        <!-- À propos Section -->
-        <section id="apropos" class="py-16 md:py-24 bg-white">
+
+        <!-- Indice GES Section -->
+        <section id="indice" class="py-12 md:py-24 bg-white">
             <div class="container mx-auto px-4">
                 <div class="max-w-6xl mx-auto">
-                    <div class="text-center mb-16">
-                        <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4 font-serif">Qui sommes-nous?</h2>
-                        <div class="w-20 h-1 bg-accent mx-auto mb-6"></div>
-                        <p class="text-lg text-dark/70 max-w-3xl mx-auto">
-                            GES S.A. est une Société de Services spécialisée dans l'acquisition, la détention, la gestion et l'administration de participations dans toutes sociétés et entreprises.
+                    <div class="text-center mb-8 md:mb-16">
+                        <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-primary mb-3 md:mb-4 font-serif">
+                            Indice GES de Performance</h2>
+                        <div class="w-16 md:w-20 h-1 bg-accent mx-auto mb-4 md:mb-6"></div>
+                        <p class="text-base md:text-lg text-dark/70 max-w-3xl mx-auto">
+                            L'indice GES mesure la performance globale de toutes les entreprises filiales du groupe et
+                            les entreprises dans lesquelles le groupe investit.
                         </p>
                     </div>
-                    
-                    <div class="grid md:grid-cols-2 gap-12 items-center">
-                        <div>
-                            <h3 class="text-2xl font-bold text-primary mb-6">Notre mission</h3>
-                            <p class="text-dark/80 mb-6">
-                                Promouvoir le développement économique en prenant en charge les besoins de financement des micro, petites, moyennes et grandes entreprises dotées d'un potentiel de création d'emplois, de génération de devises étrangères et de création de valeurs ajoutées.
-                            </p>
-                            
-                            <h3 class="text-2xl font-bold text-primary mb-6">Notre vision</h3>
-                            <p class="text-dark/80 mb-6">
-                                Devenir la plus grande institution, en termes de rentabilité économique et sociale, de potentiel de croissance continue - dotée de moyens financiers, humains et technologiques appropriés pour fournir des services adaptés aux besoins changeants du développement dans tous les secteurs d'activités.
+
+                    <!-- Graphique d'indice de performance -->
+                    <div class="mb-8 md:mb-16">
+                        <div class="bg-light rounded-xl md:rounded-2xl p-4 md:p-6 lg:p-8 shadow-lg">
+                            <h3 class="text-xl md:text-2xl font-bold text-primary mb-4 md:mb-6">Performance des
+                                entreprises (Indice GES)</h3>
+                            <div class="chart-container" style="height: 250px; md:height: 300px;">
+                                <canvas id="gesIndexChart"></canvas>
+                            </div>
+                            <div class="mt-4 md:mt-6 text-center">
+                                <p class="text-dark/70 italic text-sm md:text-base">
+                                    <i class="fas fa-info-circle text-secondary mr-2"></i>
+                                    Ce graphique représente l'indice de performance global des entreprises du groupe.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Données financières et analyse -->
+                    <div class="grid md:grid-cols-2 gap-6 md:gap-8 mb-8 md:mb-12">
+                        <div
+                            class="bg-gradient-to-br from-primary/5 to-secondary/10 rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg">
+                            <h3 class="text-lg md:text-xl font-bold text-primary mb-3 md:mb-4">Analyse financière des
+                                entreprises</h3>
+                            <div class="chart-container" style="height: 200px; md:height: 250px;">
+                                <canvas id="financialAnalysisChart"></canvas>
+                            </div>
+                            <div class="mt-3 md:mt-4">
+                                <p class="text-dark/70 text-xs md:text-sm">
+                                    Analyse des principales métriques financières des entreprises du groupe.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div
+                            class="bg-gradient-to-br from-secondary/5 to-accent/10 rounded-xl md:rounded-2xl p-4 md:p-6 shadow-lg">
+                            <h3 class="text-lg md:text-xl font-bold text-primary mb-3 md:mb-4">Performance par secteur
+                            </h3>
+                            <div class="chart-container" style="height: 200px; md:height: 250px;">
+                                <canvas id="sectorPerformanceChart"></canvas>
+                            </div>
+                            <div class="mt-3 md:mt-4">
+                                <p class="text-dark/70 text-xs md:text-sm">
+                                    Répartition de la performance des entreprises par secteur d'activité.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tableau des données -->
+                    <div class="mb-8 md:mb-12">
+                        <h3 class="text-xl md:text-2xl font-bold text-primary mb-4 md:mb-6">Données financières des
+                            entreprises</h3>
+                        <div class="responsive-table rounded-lg border border-gray-200 shadow">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-primary/10">
+                                    <tr>
+                                        <th
+                                            class="px-3 py-2 md:px-6 md:py-3 text-left text-xs font-medium text-primary uppercase tracking-wider">
+                                            Entreprise</th>
+                                        <th
+                                            class="px-3 py-2 md:px-6 md:py-3 text-left text-xs font-medium text-primary uppercase tracking-wider">
+                                            Secteur</th>
+                                        <th
+                                            class="px-3 py-2 md:px-6 md:py-3 text-left text-xs font-medium text-primary uppercase tracking-wider">
+                                            Revenus</th>
+                                        <th
+                                            class="px-3 py-2 md:px-6 md:py-3 text-left text-xs font-medium text-primary uppercase tracking-wider">
+                                            Croissance</th>
+                                        <th
+                                            class="px-3 py-2 md:px-6 md:py-3 text-left text-xs font-medium text-primary uppercase tracking-wider">
+                                            Indice</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <!-- Les lignes du tableau seront générées dynamiquement -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="mt-3 md:mt-4 text-right">
+                            <p class="text-dark/70 text-xs md:text-sm">
+                                <i class="fas fa-sync-alt text-secondary mr-1"></i> Données mises à jour le 27/12/2025
                             </p>
                         </div>
-                        
-                        <div class="bg-gradient-to-br from-primary/5 to-secondary/10 rounded-2xl p-8 shadow-lg">
-                            <h3 class="text-2xl font-bold text-primary mb-6">Objectifs spécifiques</h3>
-                            <ul class="space-y-4">
+                    </div>
+
+                    <!-- Section pour ajouter des données -->
+                    <div class="bg-light rounded-xl md:rounded-2xl p-4 md:p-6 lg:p-8 border border-dashed border-primary/30"
+                        style="display: none;">
+                        <h3 class="text-xl md:text-2xl font-bold text-primary mb-3 md:mb-4">Ajouter des données
+                            d'entreprise</h3>
+                        <p class="text-dark/70 mb-4 md:mb-6 text-sm md:text-base">
+                            Cette section permet d'ajouter les données financières des entreprises pour mettre à jour
+                            l'indice GES.
+                        </p>
+                        <form id="addCompanyDataForm" class="grid md:grid-cols-2 gap-4 md:gap-6">
+                            <div>
+                                <label for="companyName"
+                                    class="block text-dark font-medium mb-1 md:mb-2 text-sm md:text-base">Nom de
+                                    l'entreprise</label>
+                                <input type="text" id="companyName"
+                                    class="w-full px-3 py-2 md:px-4 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary text-sm md:text-base"
+                                    placeholder="Nom de l'entreprise">
+                            </div>
+                            <div>
+                                <label for="sector"
+                                    class="block text-dark font-medium mb-1 md:mb-2 text-sm md:text-base">Secteur
+                                    d'activité</label>
+                                <select id="sector"
+                                    class="w-full px-3 py-2 md:px-4 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary text-sm md:text-base">
+                                    <option value="">Sélectionnez un secteur</option>
+                                    <option value="finance">Finance</option>
+                                    <option value="technologie">Technologie</option>
+                                    <option value="commerce">Commerce</option>
+                                    <option value="education">Éducation</option>
+                                    <option value="sante">Santé</option>
+                                    <option value="immobilier">Immobilier</option>
+                                    <option value="transport">Transport</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="revenue"
+                                    class="block text-dark font-medium mb-1 md:mb-2 text-sm md:text-base">Revenus
+                                    (USD)</label>
+                                <input type="number" id="revenue"
+                                    class="w-full px-3 py-2 md:px-4 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary text-sm md:text-base"
+                                    placeholder="Montant en USD">
+                            </div>
+                            <div>
+                                <label for="growth"
+                                    class="block text-dark font-medium mb-1 md:mb-2 text-sm md:text-base">Croissance
+                                    (%)</label>
+                                <input type="number" step="0.1" id="growth"
+                                    class="w-full px-3 py-2 md:px-4 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary text-sm md:text-base"
+                                    placeholder="Pourcentage de croissance">
+                            </div>
+                            <div class="md:col-span-2">
+                                <button type="submit"
+                                    class="bg-primary text-white px-6 py-2 md:px-8 md:py-3 rounded-lg font-bold hover:bg-primary/90 transition-colors shadow-md text-sm md:text-base w-full md:w-auto">
+                                    <i class="fas fa-plus-circle mr-2"></i> Ajouter les données
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- À propos Section -->
+        <section id="apropos" class="py-12 md:py-24 bg-light">
+            <div class="container mx-auto px-4">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-8 md:mb-16">
+                        <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-primary mb-3 md:mb-4 font-serif">Qui
+                            sommes-nous?</h2>
+                        <div class="w-16 md:w-20 h-1 bg-accent mx-auto mb-4 md:mb-6"></div>
+                        <p class="text-base md:text-lg text-dark/70 max-w-3xl mx-auto">
+                            GES S.A. est une Société de Services spécialisée dans l'acquisition, la détention, la
+                            gestion et l'administration de participations dans toutes sociétés et entreprises.
+                        </p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+                        <div class="animate-on-scroll">
+                            <h3 class="text-xl md:text-2xl font-bold text-primary mb-4 md:mb-6">Notre mission</h3>
+                            <p class="text-dark/80 mb-4 md:mb-6 text-sm md:text-base">
+                                Promouvoir le développement économique en prenant en charge les besoins de financement
+                                des micro, petites, moyennes et grandes entreprises dotées d'un potentiel de création
+                                d'emplois, de génération de devises étrangères et de création de valeurs ajoutées.
+                            </p>
+
+                            <h3 class="text-xl md:text-2xl font-bold text-primary mb-4 md:mb-6">Notre vision</h3>
+                            <p class="text-dark/80 mb-4 md:mb-6 text-sm md:text-base">
+                                Devenir la plus grande institution, en termes de rentabilité économique et sociale, de
+                                potentiel de croissance continue - dotée de moyens financiers, humains et technologiques
+                                appropriés pour fournir des services adaptés aux besoins changeants du développement
+                                dans tous les secteurs d'activités.
+                            </p>
+                        </div>
+
+                        <div
+                            class="bg-gradient-to-br from-primary/5 to-secondary/10 rounded-xl md:rounded-2xl p-4 md:p-6 lg:p-8 shadow-lg animate-on-scroll">
+                            <h3 class="text-xl md:text-2xl font-bold text-primary mb-4 md:mb-6">Objectifs spécifiques
+                            </h3>
+                            <ul class="space-y-3 md:space-y-4">
                                 <li class="flex items-start">
-                                    <i class="fas fa-leaf text-accent text-xl mr-4 mt-1"></i>
+                                    <i class="fas fa-leaf text-accent text-lg md:text-xl mr-3 md:mr-4 mt-0.5"></i>
                                     <div>
-                                        <h4 class="font-bold text-dark mb-1">Développement durable</h4>
-                                        <p class="text-dark/70">Investissements respectueux de l'environnement et pérennes.</p>
+                                        <h4 class="font-bold text-dark mb-1 text-sm md:text-base">Développement durable
+                                        </h4>
+                                        <p class="text-dark/70 text-xs md:text-sm">Investissements respectueux de
+                                            l'environnement et pérennes.</p>
                                     </div>
                                 </li>
                                 <li class="flex items-start">
-                                    <i class="fas fa-users text-accent text-xl mr-4 mt-1"></i>
+                                    <i class="fas fa-users text-accent text-lg md:text-xl mr-3 md:mr-4 mt-0.5"></i>
                                     <div>
-                                        <h4 class="font-bold text-dark mb-1">Développement humain</h4>
-                                        <p class="text-dark/70">Formation et éducation financière pour tous.</p>
+                                        <h4 class="font-bold text-dark mb-1 text-sm md:text-base">Développement humain
+                                        </h4>
+                                        <p class="text-dark/70 text-xs md:text-sm">Formation et éducation financière
+                                            pour tous.</p>
                                     </div>
                                 </li>
                                 <li class="flex items-start">
-                                    <i class="fas fa-chart-line text-accent text-xl mr-4 mt-1"></i>
+                                    <i class="fas fa-chart-line text-accent text-lg md:text-xl mr-3 md:mr-4 mt-0.5"></i>
                                     <div>
-                                        <h4 class="font-bold text-dark mb-1">Développement économique</h4>
-                                        <p class="text-dark/70">Création de valeur et croissance des entreprises.</p>
+                                        <h4 class="font-bold text-dark mb-1 text-sm md:text-base">Développement
+                                            économique</h4>
+                                        <p class="text-dark/70 text-xs md:text-sm">Création de valeur et croissance des
+                                            entreprises.</p>
                                     </div>
                                 </li>
                                 <li class="flex items-start">
-                                    <i class="fas fa-handshake text-accent text-xl mr-4 mt-1"></i>
+                                    <i class="fas fa-handshake text-accent text-lg md:text-xl mr-3 md:mr-4 mt-0.5"></i>
                                     <div>
-                                        <h4 class="font-bold text-dark mb-1">Développement social</h4>
-                                        <p class="text-dark/70">Contributions au bien-être communautaire.</p>
+                                        <h4 class="font-bold text-dark mb-1 text-sm md:text-base">Développement social
+                                        </h4>
+                                        <p class="text-dark/70 text-xs md:text-sm">Contributions au bien-être
+                                            communautaire.</p>
                                     </div>
                                 </li>
                                 <li class="flex items-start">
-                                    <i class="fas fa-globe-americas text-accent text-xl mr-4 mt-1"></i>
+                                    <i
+                                        class="fas fa-globe-americas text-accent text-lg md:text-xl mr-3 md:mr-4 mt-0.5"></i>
                                     <div>
-                                        <h4 class="font-bold text-dark mb-1">Développement écologique</h4>
-                                        <p class="text-dark/70">Protection de l'environnement dans toutes nos activités.</p>
+                                        <h4 class="font-bold text-dark mb-1 text-sm md:text-base">Développement
+                                            écologique</h4>
+                                        <p class="text-dark/70 text-xs md:text-sm">Protection de l'environnement dans
+                                            toutes nos activités.</p>
                                     </div>
                                 </li>
                             </ul>
@@ -317,108 +742,141 @@
                 </div>
             </div>
         </section>
-        
+
         <!-- Services Section -->
-        <section id="services" class="py-16 md:py-24 bg-light">
+        <section id="services" class="py-12 md:py-24 bg-white">
             <div class="container mx-auto px-4">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4 font-serif">Nos Services</h2>
-                    <div class="w-20 h-1 bg-accent mx-auto mb-6"></div>
-                    <p class="text-lg text-dark/70 max-w-3xl mx-auto">
-                        Nous offrons une gamme complète de services pour soutenir les entreprises et les particuliers dans leur développement et leurs investissements.
+                <div class="text-center mb-8 md:mb-16">
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-primary mb-3 md:mb-4 font-serif">Nos
+                        Services</h2>
+                    <div class="w-16 md:w-20 h-1 bg-accent mx-auto mb-4 md:mb-6"></div>
+                    <p class="text-base md:text-lg text-dark/70 max-w-3xl mx-auto">
+                        Nous offrons une gamme complète de services pour soutenir les entreprises et les particuliers
+                        dans leur développement et leurs investissements.
                     </p>
                 </div>
-                
+
                 <!-- Services aux entreprises -->
-                <div class="mb-16">
-                    <h3 class="text-2xl font-bold text-primary mb-8 text-center md:text-left">Services aux entreprises</h3>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="mb-8 md:mb-16">
+                    <h3 class="text-xl md:text-2xl font-bold text-primary mb-6 md:mb-8 text-center md:text-left">
+                        Services aux entreprises</h3>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                         <!-- Service Card 1 -->
-                        <div class="service-card bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-                            <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
-                                <i class="fas fa-chart-pie text-primary text-2xl"></i>
+                        <div
+                            class="service-card bg-light rounded-xl md:rounded-2xl p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all animate-on-scroll">
+                            <div
+                                class="w-12 h-12 md:w-14 md:h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-4 md:mb-6">
+                                <i class="fas fa-chart-pie text-primary text-xl md:text-2xl"></i>
                             </div>
-                            <h4 class="text-xl font-bold text-dark mb-4">Conseils d'investissement</h4>
-                            <p class="text-dark/70 mb-6">
-                                Accompagnement stratégique pour des investissements rentables et sécurisés dans divers secteurs d'activités.
+                            <h4 class="text-lg md:text-xl font-bold text-dark mb-3 md:mb-4">Conseils d'investissement
+                            </h4>
+                            <p class="text-dark/70 mb-4 md:mb-6 text-sm md:text-base">
+                                Accompagnement stratégique pour des investissements rentables et sécurisés dans divers
+                                secteurs d'activités.
                             </p>
-                            <a href="#contact" class="text-primary font-semibold flex items-center">
+                            <a href="#contact"
+                                class="text-primary font-semibold flex items-center text-sm md:text-base">
                                 En savoir plus <i class="fas fa-arrow-right ml-2"></i>
                             </a>
                         </div>
-                        
+
                         <!-- Service Card 2 -->
-                        <div class="service-card bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-                            <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
-                                <i class="fas fa-file-contract text-primary text-2xl"></i>
+                        <div
+                            class="service-card bg-light rounded-xl md:rounded-2xl p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all animate-on-scroll">
+                            <div
+                                class="w-12 h-12 md:w-14 md:h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-4 md:mb-6">
+                                <i class="fas fa-file-contract text-primary text-xl md:text-2xl"></i>
                             </div>
-                            <h4 class="text-xl font-bold text-dark mb-4">Plan d'affaires & Études de projets</h4>
-                            <p class="text-dark/70 mb-6">
-                                Élaboration de plans d'affaires, plans stratégiques et diagnostics financiers pour optimiser vos opérations.
+                            <h4 class="text-lg md:text-xl font-bold text-dark mb-3 md:mb-4">Plan d'affaires & Études de
+                                projets</h4>
+                            <p class="text-dark/70 mb-4 md:mb-6 text-sm md:text-base">
+                                Élaboration de plans d'affaires, plans stratégiques et diagnostics financiers pour
+                                optimiser vos opérations.
                             </p>
-                            <a href="#contact" class="text-primary font-semibold flex items-center">
+                            <a href="#contact"
+                                class="text-primary font-semibold flex items-center text-sm md:text-base">
                                 En savoir plus <i class="fas fa-arrow-right ml-2"></i>
                             </a>
                         </div>
-                        
+
                         <!-- Service Card 3 -->
-                        <div class="service-card bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-                            <div class="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-6">
-                                <i class="fas fa-handshake text-primary text-2xl"></i>
+                        <div
+                            class="service-card bg-light rounded-xl md:rounded-2xl p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all animate-on-scroll">
+                            <div
+                                class="w-12 h-12 md:w-14 md:h-14 bg-primary/10 rounded-xl flex items-center justify-center mb-4 md:mb-6">
+                                <i class="fas fa-handshake text-primary text-xl md:text-2xl"></i>
                             </div>
-                            <h4 class="text-xl font-bold text-dark mb-4">Support & Accompagnement</h4>
-                            <p class="text-dark/70 mb-6">
-                                Assistance complète de la création à l'expansion des entreprises, incluant services légaux et marketing.
+                            <h4 class="text-lg md:text-xl font-bold text-dark mb-3 md:mb-4">Support & Accompagnement
+                            </h4>
+                            <p class="text-dark/70 mb-4 md:mb-6 text-sm md:text-base">
+                                Assistance complète de la création à l'expansion des entreprises, incluant services
+                                légaux et marketing.
                             </p>
-                            <a href="#contact" class="text-primary font-semibold flex items-center">
+                            <a href="#contact"
+                                class="text-primary font-semibold flex items-center text-sm md:text-base">
                                 En savoir plus <i class="fas fa-arrow-right ml-2"></i>
                             </a>
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Services aux particuliers -->
                 <div>
-                    <h3 class="text-2xl font-bold text-primary mb-8 text-center md:text-left">Services aux particuliers</h3>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <h3 class="text-xl md:text-2xl font-bold text-primary mb-6 md:mb-8 text-center md:text-left">
+                        Services aux particuliers</h3>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                         <!-- Service Card 4 -->
-                        <div class="service-card bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-                            <div class="w-14 h-14 bg-secondary/10 rounded-xl flex items-center justify-center mb-6">
-                                <i class="fas fa-piggy-bank text-secondary text-2xl"></i>
+                        <div
+                            class="service-card bg-light rounded-xl md:rounded-2xl p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all animate-on-scroll">
+                            <div
+                                class="w-12 h-12 md:w-14 md:h-14 bg-secondary/10 rounded-xl flex items-center justify-center mb-4 md:mb-6">
+                                <i class="fas fa-piggy-bank text-secondary text-xl md:text-2xl"></i>
                             </div>
-                            <h4 class="text-xl font-bold text-dark mb-4">Planification financière personnelle</h4>
-                            <p class="text-dark/70 mb-6">
-                                Aide à la planification de projets personnels (études, maison, retraite) selon vos revenus et objectifs.
+                            <h4 class="text-lg md:text-xl font-bold text-dark mb-3 md:mb-4">Planification financière
+                                personnelle</h4>
+                            <p class="text-dark/70 mb-4 md:mb-6 text-sm md:text-base">
+                                Aide à la planification de projets personnels (études, maison, retraite) selon vos
+                                revenus et objectifs.
                             </p>
-                            <a href="#contact" class="text-secondary font-semibold flex items-center">
+                            <a href="#contact"
+                                class="text-secondary font-semibold flex items-center text-sm md:text-base">
                                 En savoir plus <i class="fas fa-arrow-right ml-2"></i>
                             </a>
                         </div>
-                        
+
                         <!-- Service Card 5 -->
-                        <div class="service-card bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-                            <div class="w-14 h-14 bg-secondary/10 rounded-xl flex items-center justify-center mb-6">
-                                <i class="fas fa-chart-line text-secondary text-2xl"></i>
+                        <div
+                            class="service-card bg-light rounded-xl md:rounded-2xl p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all animate-on-scroll">
+                            <div
+                                class="w-12 h-12 md:w-14 md:h-14 bg-secondary/10 rounded-xl flex items-center justify-center mb-4 md:mb-6">
+                                <i class="fas fa-chart-line text-secondary text-xl md:text-2xl"></i>
                             </div>
-                            <h4 class="text-xl font-bold text-dark mb-4">Gestion de portefeuille</h4>
-                            <p class="text-dark/70 mb-6">
-                                Services financiers personnalisés pour optimiser vos investissements avec sécurité et professionnalisme.
+                            <h4 class="text-lg md:text-xl font-bold text-dark mb-3 md:mb-4">Gestion de portefeuille</h4>
+                            <p class="text-dark/70 mb-4 md:mb-6 text-sm md:text-base">
+                                Services financiers personnalisés pour optimiser vos investissements avec sécurité et
+                                professionnalisme.
                             </p>
-                            <a href="#contact" class="text-secondary font-semibold flex items-center">
+                            <a href="#contact"
+                                class="text-secondary font-semibold flex items-center text-sm md:text-base">
                                 En savoir plus <i class="fas fa-arrow-right ml-2"></i>
                             </a>
                         </div>
-                        
+
                         <!-- Service Card 6 -->
-                        <div class="service-card bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-                            <div class="w-14 h-14 bg-secondary/10 rounded-xl flex items-center justify-center mb-6">
-                                <i class="fas fa-graduation-cap text-secondary text-2xl"></i>
+                        <div
+                            class="service-card bg-light rounded-xl md:rounded-2xl p-4 md:p-6 lg:p-8 shadow-lg hover:shadow-xl transition-all animate-on-scroll">
+                            <div
+                                class="w-12 h-12 md:w-14 md:h-14 bg-secondary/10 rounded-xl flex items-center justify-center mb-4 md:mb-6">
+                                <i class="fas fa-graduation-cap text-secondary text-xl md:text-2xl"></i>
                             </div>
-                            <h4 class="text-xl font-bold text-dark mb-4">Formation & Éducation financière</h4>
-                            <p class="text-dark/70 mb-6">
-                                Formation continue en développement personnel, entreprenariat et gestion de finances personnelles.
+                            <h4 class="text-lg md:text-xl font-bold text-dark mb-3 md:mb-4">Formation & Éducation
+                                financière</h4>
+                            <p class="text-dark/70 mb-4 md:mb-6 text-sm md:text-base">
+                                Formation continue en développement personnel, entreprenariat et gestion de finances
+                                personnelles.
                             </p>
-                            <a href="#contact" class="text-secondary font-semibold flex items-center">
+                            <a href="#contact"
+                                class="text-secondary font-semibold flex items-center text-sm md:text-base">
                                 En savoir plus <i class="fas fa-arrow-right ml-2"></i>
                             </a>
                         </div>
@@ -426,462 +884,245 @@
                 </div>
             </div>
         </section>
-        
+
         <!-- Valeurs Section -->
-        <section id="valeurs" class="py-16 md:py-24 bg-gradient-to-r from-primary/90 to-primary">
+        <section class="py-12 md:py-24 bg-gradient-to-r from-primary/90 to-primary">
             <div class="container mx-auto px-4">
-                <div class="text-center mb-16">
-                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 font-serif">Nos Valeurs</h2>
-                    <div class="w-20 h-1 bg-accent mx-auto mb-6"></div>
-                    <p class="text-lg text-white/80 max-w-3xl mx-auto">
+                <div class="text-center mb-8 md:mb-16">
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 md:mb-4 font-serif">Nos
+                        Valeurs</h2>
+                    <div class="w-16 md:w-20 h-1 bg-accent mx-auto mb-4 md:mb-6"></div>
+                    <p class="text-base md:text-lg text-white/80 max-w-3xl mx-auto">
                         Les principes qui guident chacune de nos actions et décisions
                     </p>
                 </div>
-                
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
                     <!-- Valeur 1 -->
-                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20">
-                        <div class="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-6">
-                            <i class="fas fa-dumbbell text-white text-3xl"></i>
+                    <div
+                        class="bg-white/10 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-6 lg:p-8 text-center border border-white/20 animate-on-scroll">
+                        <div
+                            class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-4 md:mb-6">
+                            <i class="fas fa-dumbbell text-white text-2xl md:text-3xl"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-4">Discipline</h3>
-                        <p class="text-white/80">
+                        <h3 class="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">Discipline</h3>
+                        <p class="text-white/80 text-sm md:text-base">
                             Rigueur et méthode dans l'exécution de nos missions et la gestion des investissements.
                         </p>
                     </div>
-                    
+
                     <!-- Valeur 2 -->
-                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20">
-                        <div class="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-6">
-                            <i class="fas fa-trophy text-white text-3xl"></i>
+                    <div
+                        class="bg-white/10 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-6 lg:p-8 text-center border border-white/20 animate-on-scroll">
+                        <div
+                            class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-4 md:mb-6">
+                            <i class="fas fa-trophy text-white text-2xl md:text-3xl"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-4">Persévérance</h3>
-                        <p class="text-white/80">
+                        <h3 class="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">Persévérance</h3>
+                        <p class="text-white/80 text-sm md:text-base">
                             Engagement constant envers nos objectifs et ceux de nos clients, malgré les défis.
                         </p>
                     </div>
-                    
+
                     <!-- Valeur 3 -->
-                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20">
-                        <div class="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-6">
-                            <i class="fas fa-shield-alt text-white text-3xl"></i>
+                    <div
+                        class="bg-white/10 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-6 lg:p-8 text-center border border-white/20 animate-on-scroll">
+                        <div
+                            class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-4 md:mb-6">
+                            <i class="fas fa-shield-alt text-white text-2xl md:text-3xl"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-4">Résistance</h3>
-                        <p class="text-white/80">
-                            Capacité à maintenir la stabilité et la performance dans des environnements économiques changeants.
+                        <h3 class="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">Résistance</h3>
+                        <p class="text-white/80 text-sm md:text-base">
+                            Capacité à maintenir la stabilité et la performance dans des environnements économiques
+                            changeants.
                         </p>
                     </div>
-                    
+
                     <!-- Valeur 4 -->
-                    <div class="bg-white/10 backdrop-blur-sm rounded-2xl p-8 text-center border border-white/20">
-                        <div class="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-6">
-                            <i class="fas fa-chart-line text-white text-3xl"></i>
+                    <div
+                        class="bg-white/10 backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-6 lg:p-8 text-center border border-white/20 animate-on-scroll">
+                        <div
+                            class="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-4 md:mb-6">
+                            <i class="fas fa-chart-line text-white text-2xl md:text-3xl"></i>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-4">Constance</h3>
-                        <p class="text-white/80">
+                        <h3 class="text-lg md:text-xl font-bold text-white mb-3 md:mb-4">Constance</h3>
+                        <p class="text-white/80 text-sm md:text-base">
                             Cohérence dans l'excellence de nos services et la réalisation de nos engagements.
                         </p>
                     </div>
                 </div>
             </div>
         </section>
-        
+
         <!-- Filiales Section -->
-      <section id="filiales" class="py-16 md:py-24 bg-white">
-    <div class="container mx-auto px-4">
-        <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4 font-serif">Nos Entreprises Filiales</h2>
-            <div class="w-20 h-1 bg-accent mx-auto mb-6"></div>
-            <p class="text-lg text-dark/70 max-w-3xl mx-auto">
-                Découvrez notre réseau d'entreprises partenaires et filiales dans divers secteurs d'activité
-            </p>
-        </div>
-        
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-12">
-            <!-- Logo Filiale 1 -->
-            <a href="https://www.example1.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-                <div class="text-center">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-                        <img src="Entreprise de Microfinance et assurance.jpeg" alt="Entreprise de Microfinance et assurance" class="w-full h-full object-cover">
-                    </div>
-                    <p class="font-medium text-dark">Entreprise de Microfinance et assurance</p>
+        <section id="filiales" class="py-12 md:py-24 bg-light">
+            <div class="container mx-auto px-4">
+                <div class="text-center mb-8 md:mb-16">
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-primary mb-3 md:mb-4 font-serif">Nos
+                        Entreprises Filiales</h2>
+                    <div class="w-16 md:w-20 h-1 bg-accent mx-auto mb-4 md:mb-6"></div>
+                    <p class="text-base md:text-lg text-dark/70 max-w-3xl mx-auto">
+                        Découvrez notre réseau d'entreprises partenaires et filiales dans divers secteurs d'activité.
+                        Cliquez sur une entreprise pour voir ses graphiques de performance.
+                    </p>
                 </div>
-            </a>
-            
-            <!-- Logo Filiale 2 -->
-            <a href="https://www.example2.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-                <div class="text-center">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-                        <img src="Wallet de paiement.jpeg" alt="Wallet de paiement" class="w-full h-full object-cover">
-                    </div>
-                    <p class="font-medium text-dark">Wallet de paiement</p>
-                </div>
-            </a>
-            
-            <!-- Logo Filiale 3 -->
-            <a href="https://www.example3.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-                <div class="text-center">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-                        <img src="E-commerce, Magasin en ligne.jpeg" alt="E-commerce, Magasin en ligne" class="w-full h-full object-cover">
-                    </div>
-                    <p class="font-medium text-dark">E-commerce, Magasin en ligne</p>
-                </div>
-            </a>
-            
-            <!-- Logo Filiale 4 -->
-            <a href="https://www.example4.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-                <div class="text-center">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-                        <img src="Universite.jpeg" alt="Universite" class="w-full h-full object-cover">
-                    </div>
-                    <p class="font-medium text-dark">Universite</p>
-                </div>
-            </a>
-            
-            <!-- Logo Filiale 5 -->
-            <a href="https://www.example5.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-                <div class="text-center">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-                        <img src="Banque cooperative.jpeg" alt="Banque cooperative" class="w-full h-full object-cover">
-                    </div>
-                    <p class="font-medium text-dark">Banque cooperative</p>
-                </div>
-            </a>
-            
-            <!-- Logo Filiale 6 -->
-            <a href="https://www.example6.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-                <div class="text-center">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-                        <img src="Studio de tout genre.jpeg" alt="Studio de tout genre" class="w-full h-full object-cover">
-                    </div>
-                    <p class="font-medium text-dark">Studio de tout genre</p>
-                </div>
-            </a>
-            <!-- Logo Filiale 18 -->
-<a href="https://www.example18.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-    <div class="text-center">
-        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-            <img src="Auto Parts.jpeg" alt="Auto Parts" class="w-full h-full object-cover">
-        </div>
-        <p class="font-medium text-dark">Auto Parts</p>
-    </div>
-</a>
 
-<!-- Logo Filiale 19 -->
-<a href="https://www.example19.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-    <div class="text-center">
-        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-            <img src="Super Marché Public.jpeg" alt="Super Marché Public" class="w-full h-full object-cover">
-        </div>
-        <p class="font-medium text-dark">Super Marché Public</p>
-    </div>
-</a>
+                <!-- Conteneur pour les entreprises filiales -->
+                <div id="companiesContainer"
+                    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6 mb-8 md:mb-12">
+                    <!-- Les cartes d'entreprises seront générées dynamiquement -->
+                </div>
 
-<!-- Logo Filiale 20 -->
-<a href="https://www.example20.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-    <div class="text-center">
-        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-            <img src="Studio de beauté.jpeg" alt="Studio de beauté" class="w-full h-full object-cover">
-        </div>
-        <p class="font-medium text-dark">Studio de beauté</p>
-    </div>
-</a>
+                <div class="text-center">
+                    <p class="text-dark/70 mb-6 md:mb-8 text-sm md:text-base">
+                        Ces entreprises font partie de notre réseau d'investissement et contribuent au développement
+                        économique dans leurs secteurs respectifs.
+                    </p>
+                    <a href="#contact"
+                        class="bg-primary text-white px-6 py-3 md:px-8 md:py-3 rounded-lg font-bold hover:bg-primary/90 transition-colors shadow-md inline-flex items-center text-sm md:text-base">
+                        Devenir partenaire <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
 
-<!-- Logo Filiale 21 -->
-<a href="https://www.example21.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-    <div class="text-center">
-        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-            <img src="Quincaillerie.jpeg" alt="Quincaillerie" class="w-full h-full object-cover">
-        </div>
-        <p class="font-medium text-dark">Quincaillerie</p>
-    </div>
-</a>
-
-<!-- Logo Filiale 22 -->
-<a href="https://www.example22.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-    <div class="text-center">
-        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-            <img src="Entreprise de sécurité.jpeg" alt="Entreprise de sécurité" class="w-full h-full object-cover">
-        </div>
-        <p class="font-medium text-dark">Entreprise de sécurité</p>
-    </div>
-</a>
-
-<!-- Logo Filiale 23 -->
-<a href="https://www.example23.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-    <div class="text-center">
-        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-            <img src="Église Évangélique Chrétienne.jpeg" alt="Église Évangélique Chrétienne" class="w-full h-full object-cover">
-        </div>
-        <p class="font-medium text-dark">Église Évangélique Chrétienne</p>
-    </div>
-</a>
-<a href="https://www.example23.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-    <div class="text-center">
-        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-            <img src="Centre Étude Spécialisé et de Recherche - UTESA.jpeg" alt="Église Évangélique Chrétienne" class="w-full h-full object-cover">
-        </div>
-        <p class="font-medium text-dark">Centre Étude Spécialisé et de Recherche</p>
-    </div>
-</a>
-
-<a href="https://www.example23.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-    <div class="text-center">
-        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-            <img src="Entreprise de Microfinance.jpeg" alt="Église Évangélique Chrétienne" class="w-full h-full object-cover">
-        </div>
-        <p class="font-medium text-dark">Entreprise de Microfinanceg</p>
-    </div>
-</a>
-<a href="https://www.example23.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-    <div class="text-center">
-        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-            <img src="FRS.jpeg" alt="Église Évangélique Chrétienne" class="w-full h-full object-cover">
-        </div>
-        <p class="font-medium text-dark">FRS</p>
-    </div>
-</a>
-<a href="https://www.example23.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-    <div class="text-center">
-        <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-            <img src="LIS.jpeg" alt="Église Évangélique Chrétienne" class="w-full h-full object-cover">
-        </div>
-        <p class="font-medium text-dark">LIS</p>
-    </div>
-</a>
-            <!-- Logo Filiale 7 -->
-            <a href="https://www.example7.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-                <div class="text-center">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-                        <img src="Pharmacie - Laboratoire specialisé.jpeg" alt="Pharmacie - Laboratoire specialisé" class="w-full h-full object-cover">
-                    </div>
-                    <p class="font-medium text-dark">Pharmacie - Laboratoire spécialisé</p>
-                </div>
-            </a>
-            
-            <!-- Logo Filiale 8 -->
-            <a href="https://www.example8.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-                <div class="text-center">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-                        <img src="Marketing, technologie, Multiservices.jpeg" alt="Marketing, technologie, Multiservices" class="w-full h-full object-cover">
-                    </div>
-                    <p class="font-medium text-dark">Marketing, technologie, Multiservices</p>
-                </div>
-            </a>
-            
-            <!-- Logo Filiale 9 -->
-            <a href="https://www.example9.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-                <div class="text-center">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-                        <img src="Entreprises de services aux d'entreprises: Incubateur, Accelerateur d'entreprises et accompagnement.jpeg" alt="Entreprises de services aux d'entreprises: Incubateur, Accelerateur d'entreprises et accompagnement" class="w-full h-full object-cover">
-                    </div>
-                    <p class="font-medium text-dark">Incubateur & Accélérateur d'entreprises</p>
-                </div>
-            </a>
-            
-            <!-- Logo Filiale 10 -->
-            <a href="https://www.example10.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-                <div class="text-center">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-                        <img src="Courtier financier.jpeg" alt="Courtier financier" class="w-full h-full object-cover">
-                    </div>
-                    <p class="font-medium text-dark">Courtier financier</p>
-                </div>
-            </a>
-            
-            <!-- Logo Filiale 11 -->
-            <a href="https://www.example11.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-                <div class="text-center">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-                        <img src="Fondation.jpeg" alt="Fondation" class="w-full h-full object-cover">
-                    </div>
-                    <p class="font-medium text-dark">Fondation</p>
-                </div>
-            </a>
-            
-            <!-- Logo Filiale 12 -->
-            <a href="https://www.example12.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-                <div class="text-center">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-                        <img src="Entreprise de Transport specialisé.jpeg" alt="Entreprise de Transport specialisé" class="w-full h-full object-cover">
-                    </div>
-                    <p class="font-medium text-dark">Entreprise de Transport spécialisé</p>
-                </div>
-            </a>
-            
-            <!-- Logo Filiale 13 -->
-            <a href="https://www.example13.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-                <div class="text-center">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-                        <img src="Entreprise Immobilier.jpeg" alt="Entreprise Immobilier" class="w-full h-full object-cover">
-                    </div>
-                    <p class="font-medium text-dark">Entreprise Immobilier</p>
-                </div>
-            </a>
-            
-            <!-- Logo Filiale 14 -->
-            <a href="https://www.example14.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-                <div class="text-center">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-                        <img src="Ecole Segondaire: Politechnique.jpeg" alt="Ecole Segondaire: Politechnique" class="w-full h-full object-cover">
-                    </div>
-                    <p class="font-medium text-dark">École Polytechnique</p>
-                </div>
-            </a>
-            
-            <!-- Logo Filiale 15 -->
-            <a href="https://www.example15.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-                <div class="text-center">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-                        <img src="Ecole Professionnel.jpeg" alt="Ecole Professionnel" class="w-full h-full object-cover">
-                    </div>
-                    <p class="font-medium text-dark">École Professionnelle</p>
-                </div>
-            </a>
-            
-            <!-- Logo Filiale 16 -->
-            <a href="https://www.example16.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-                <div class="text-center">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-                        <img src="Centre médical Specialisé.jpeg" alt="Centre médical Specialisé" class="w-full h-full object-cover">
-                    </div>
-                    <p class="font-medium text-dark">Centre médical Spécialisé</p>
-                </div>
-            </a>
-            
-            <!-- Logo Filiale 17 -->
-            <a href="https://www.example17.com" target="_blank" class="partner-logo bg-light rounded-xl p-6 flex items-center justify-center shadow-md hover:shadow-lg">
-                <div class="text-center">
-                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3 overflow-hidden bg-light">
-                        <img src="Agence de Voyage specialisé.jpeg" alt="Agence de Voyage specialisé" class="w-full h-full object-cover">
-                    </div>
-                    <p class="font-medium text-dark">Agence de Voyage spécialisé</p>
-                </div>
-            </a>
-        </div>
-        
-        <div class="text-center">
-            <p class="text-dark/70 mb-8">
-                Ces entreprises font partie de notre réseau d'investissement et contribuent au développement économique dans leurs secteurs respectifs.
-            </p>
-            <a href="#contact" class="bg-primary text-white px-8 py-3 rounded-lg font-bold hover:bg-primary/90 transition-colors shadow-md inline-flex items-center">
-                Devenir partenaire <i class="fas fa-arrow-right ml-2"></i>
-            </a>
-        </div>
-    </div>
-</section>
         <!-- Contact Section -->
-        <section id="contact" class="py-16 md:py-24 bg-light">
+        <section id="contact" class="py-12 md:py-24 bg-white">
             <div class="container mx-auto px-4">
                 <div class="max-w-6xl mx-auto">
-                    <div class="text-center mb-16">
-                        <h2 class="text-3xl md:text-4xl font-bold text-primary mb-4 font-serif">Contactez-nous</h2>
-                        <div class="w-20 h-1 bg-accent mx-auto mb-6"></div>
-                        <p class="text-lg text-dark/70 max-w-3xl mx-auto">
-                            Prêt à investir dans l'avenir? Discutons de vos projets et découvrez comment nous pouvons vous accompagner.
+                    <div class="text-center mb-8 md:mb-16">
+                        <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold text-primary mb-3 md:mb-4 font-serif">
+                            Contactez-nous</h2>
+                        <div class="w-16 md:w-20 h-1 bg-accent mx-auto mb-4 md:mb-6"></div>
+                        <p class="text-base md:text-lg text-dark/70 max-w-3xl mx-auto">
+                            Prêt à investir dans l'avenir? Discutons de vos projets et découvrez comment nous pouvons
+                            vous accompagner.
                         </p>
                     </div>
-                    
-                    <div class="grid md:grid-cols-2 gap-12">
+
+                    <div class="grid md:grid-cols-2 gap-8 md:gap-12">
                         <!-- Informations de contact -->
-                        <div>
-                            <h3 class="text-2xl font-bold text-primary mb-8">Nos coordonnées</h3>
-                            
-                            <div class="space-y-6 mb-10">
+                        <div class="animate-on-scroll">
+                            <h3 class="text-xl md:text-2xl font-bold text-primary mb-6 md:mb-8">Nos coordonnées</h3>
+
+                            <div class="space-y-4 md:space-y-6 mb-8 md:mb-10">
                                 <div class="flex items-start">
-                                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
-                                        <i class="fas fa-map-marker-alt text-primary text-xl"></i>
+                                    <div
+                                        class="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-xl flex items-center justify-center mr-3 md:mr-4 flex-shrink-0">
+                                        <i class="fas fa-map-marker-alt text-primary text-lg md:text-xl"></i>
                                     </div>
                                     <div>
-                                        <h4 class="font-bold text-dark mb-1">Adresse</h4>
-                                        <p class="text-dark/70">123 Avenue des Affaires<br>Port-au-Prince, Haïti</p>
+                                        <h4 class="font-bold text-dark mb-1 text-sm md:text-base">Adresse siège social
+                                        </h4>
+                                        <p class="text-dark/70 text-xs md:text-sm">
+                                            #31, Impasse Petit, Musseau, Delmas 60<br>(entrée en face de la pompe
+                                            gazoline Nationale, zone Ministère des Affaires
+                                            Etrangères)<br>Port-au-Prince, Haïti
+                                        </p>
                                     </div>
                                 </div>
-                                
+
                                 <div class="flex items-start">
-                                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
-                                        <i class="fas fa-phone text-primary text-xl"></i>
+                                    <div
+                                        class="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-xl flex items-center justify-center mr-3 md:mr-4 flex-shrink-0">
+                                        <i class="fas fa-phone text-primary text-lg md:text-xl"></i>
                                     </div>
                                     <div>
-                                        <h4 class="font-bold text-dark mb-1">Téléphone</h4>
-                                        <p class="text-dark/70">+509 1234-5678</p>
+                                        <h4 class="font-bold text-dark mb-1 text-sm md:text-base">Téléphone</h4>
+                                        <p class="text-dark/70 text-xs md:text-sm">
+                                            +509 34 86 9456 (Digicel)<br>+509 35 25 9529 (Natcom)
+                                        </p>
                                     </div>
                                 </div>
-                                
+
                                 <div class="flex items-start">
-                                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
-                                        <i class="fas fa-envelope text-primary text-xl"></i>
+                                    <div
+                                        class="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-xl flex items-center justify-center mr-3 md:mr-4 flex-shrink-0">
+                                        <i class="fas fa-globe text-primary text-lg md:text-xl"></i>
                                     </div>
                                     <div>
-                                        <h4 class="font-bold text-dark mb-1">Email</h4>
-                                        <p class="text-dark/70">contact@gesservices.com</p>
+                                        <h4 class="font-bold text-dark mb-1 text-sm md:text-base">Site Web</h4>
+                                        <p class="text-dark/70 text-xs md:text-sm">
+                                            ges-sfd.com
+                                        </p>
                                     </div>
                                 </div>
-                                
+
                                 <div class="flex items-start">
-                                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mr-4">
-                                        <i class="fas fa-clock text-primary text-xl"></i>
+                                    <div
+                                        class="w-10 h-10 md:w-12 md:h-12 bg-primary/10 rounded-xl flex items-center justify-center mr-3 md:mr-4 flex-shrink-0">
+                                        <i class="fas fa-clock text-primary text-lg md:text-xl"></i>
                                     </div>
                                     <div>
-                                        <h4 class="font-bold text-dark mb-1">Heures d'ouverture</h4>
-                                        <p class="text-dark/70">Lun - Ven: 8h00 - 17h00<br>Samedi: 9h00 - 13h00</p>
+                                        <h4 class="font-bold text-dark mb-1 text-sm md:text-base">Heures d'ouverture
+                                        </h4>
+                                        <p class="text-dark/70 text-xs md:text-sm">
+                                            Lun - Ven: 8h00 - 17h00<br>Samedi: 9h00 - 13h00
+                                        </p>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div>
-                                <h4 class="font-bold text-dark mb-4">Suivez-nous</h4>
-                                <div class="flex space-x-4">
-                                    <a href="#" class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors">
-                                        <i class="fab fa-linkedin-in"></i>
-                                    </a>
-                                    <a href="#" class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors">
-                                        <i class="fab fa-twitter"></i>
-                                    </a>
-                                    <a href="#" class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors">
-                                        <i class="fab fa-facebook-f"></i>
-                                    </a>
-                                    <a href="#" class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-colors">
-                                        <i class="fab fa-instagram"></i>
-                                    </a>
+                                <h4 class="font-bold text-dark mb-3 md:mb-4 text-sm md:text-base">Suivez-nous sur les
+                                    réseaux sociaux</h4>
+                                <div class="flex flex-wrap gap-2 md:gap-3">
+                                    <!-- Réseaux sociaux seront générés dynamiquement -->
                                 </div>
                             </div>
                         </div>
-                        
+
                         <!-- Formulaire de contact -->
-                        <div class="bg-white rounded-2xl p-8 shadow-lg">
-                            <h3 class="text-2xl font-bold text-primary mb-6">Envoyez-nous un message</h3>
-                            
+                        <div class="bg-light rounded-xl md:rounded-2xl p-4 md:p-6 lg:p-8 shadow-lg animate-on-scroll">
+                            <h3 class="text-xl md:text-2xl font-bold text-primary mb-4 md:mb-6">Envoyez-nous un message
+                            </h3>
+
                             <form id="contactForm">
-                                <div class="mb-6">
-                                    <label for="name" class="block text-dark font-medium mb-2">Nom complet</label>
-                                    <input type="text" id="name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary" placeholder="Votre nom">
+                                <div class="mb-4 md:mb-6">
+                                    <label for="name"
+                                        class="block text-dark font-medium mb-1 md:mb-2 text-sm md:text-base">Nom
+                                        complet</label>
+                                    <input type="text" id="name"
+                                        class="w-full px-3 py-2 md:px-4 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary text-sm md:text-base"
+                                        placeholder="Votre nom" required>
                                 </div>
-                                
-                                <div class="mb-6">
-                                    <label for="email" class="block text-dark font-medium mb-2">Adresse email</label>
-                                    <input type="email" id="email" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary" placeholder="votre@email.com">
+
+                                <div class="mb-4 md:mb-6">
+                                    <label for="email"
+                                        class="block text-dark font-medium mb-1 md:mb-2 text-sm md:text-base">Adresse
+                                        email</label>
+                                    <input type="email" id="email"
+                                        class="w-full px-3 py-2 md:px-4 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary text-sm md:text-base"
+                                        placeholder="votre@email.com" required>
                                 </div>
-                                
-                                <div class="mb-6">
-                                    <label for="subject" class="block text-dark font-medium mb-2">Sujet</label>
-                                    <select id="subject" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary">
+
+                                <div class="mb-4 md:mb-6">
+                                    <label for="subject"
+                                        class="block text-dark font-medium mb-1 md:mb-2 text-sm md:text-base">Sujet</label>
+                                    <select id="subject"
+                                        class="w-full px-3 py-2 md:px-4 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary text-sm md:text-base"
+                                        required>
                                         <option value="">Sélectionnez un sujet</option>
                                         <option value="investissement">Conseils d'investissement</option>
                                         <option value="entreprise">Services aux entreprises</option>
                                         <option value="particulier">Services aux particuliers</option>
                                         <option value="formation">Formations</option>
                                         <option value="partenariat">Partenariat</option>
+                                        <option value="indice">Indice GES</option>
                                         <option value="autre">Autre</option>
                                     </select>
                                 </div>
-                                
-                                <div class="mb-6">
-                                    <label for="message" class="block text-dark font-medium mb-2">Message</label>
-                                    <textarea id="message" rows="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary" placeholder="Décrivez votre projet ou votre demande..."></textarea>
+
+                                <div class="mb-4 md:mb-6">
+                                    <label for="message"
+                                        class="block text-dark font-medium mb-1 md:mb-2 text-sm md:text-base">Message</label>
+                                    <textarea id="message" rows="4"
+                                        class="w-full px-3 py-2 md:px-4 md:py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-primary text-sm md:text-base"
+                                        placeholder="Décrivez votre projet ou votre demande..." required></textarea>
                                 </div>
-                                
-                                <button type="submit" class="w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary/90 transition-colors shadow-md">
+
+                                <button type="submit"
+                                    class="w-full bg-primary text-white py-3 rounded-lg font-bold hover:bg-primary/90 transition-colors shadow-md text-sm md:text-base">
                                     Envoyer le message
                                 </button>
                             </form>
@@ -890,83 +1131,488 @@
                 </div>
             </div>
         </section>
-        
+
         <!-- Footer -->
-        <footer class="bg-dark text-white py-12">
+        <footer class="bg-dark text-white py-8 md:py-12">
             <div class="container mx-auto px-4">
-                <div class="grid md:grid-cols-4 gap-8 mb-10">
+                <div class="grid md:grid-cols-4 gap-6 md:gap-8 mb-8 md:mb-10">
                     <!-- Colonne 1 -->
                     <div>
-                        <div class="flex items-center mb-6">
-                            <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center mr-3">
-                                <span class="text-primary font-bold"><img src="logoges.png" alt="Welcome" class="full-img">  </span>
+                        <div class="flex items-center mb-4 md:mb-6">
+                            <div
+                                class="w-8 h-8 md:w-10 md:h-10 bg-white rounded-lg flex items-center justify-center mr-2 md:mr-3">
+                                <span class="text-primary font-bold text-sm md:text-base">
+                                <img 
+            src="logoges.png" 
+            alt="Logo Dens production"
+            width="60"
+            height="60"
+            class="w-12 h-12 sm:w-14 sm:h-14 object-contain drop-shadow-lg transition-transform duration-300 hover:scale-105"
+          />
+                                </span>
                             </div>
                             <div>
-                                <h2 class="text-xl font-bold text-white">GES S.A.</h2>
+                                <h2 class="text-lg md:text-xl font-bold text-white">GES S.A.</h2>
                                 <p class="text-xs text-gray-400">Société de Services</p>
                             </div>
                         </div>
-                        <p class="text-gray-300 mb-6">
-                            Société de Services spécialisée en gestion et finance, œuvrant pour un développement durable et humain.
+                        <p class="text-gray-300 mb-4 md:mb-6 text-xs md:text-sm">
+                            Société de Services spécialisée en gestion et finance, œuvrant pour un développement durable
+                            et humain.
                         </p>
                     </div>
-                    
+
                     <!-- Colonne 2 -->
                     <div>
-                        <h3 class="text-lg font-bold text-white mb-6">Services</h3>
-                        <ul class="space-y-3">
-                            <li><a href="#services" class="text-gray-300 hover:text-accent transition-colors">Conseils d'investissement</a></li>
-                            <li><a href="#services" class="text-gray-300 hover:text-accent transition-colors">Planification financière</a></li>
-                            <li><a href="#services" class="text-gray-300 hover:text-accent transition-colors">Formation & Éducation</a></li>
-                            <li><a href="#services" class="text-gray-300 hover:text-accent transition-colors">Support aux entreprises</a></li>
+                        <h3 class="text-base md:text-lg font-bold text-white mb-3 md:mb-6">Services</h3>
+                        <ul class="space-y-2 md:space-y-3">
+                            <li><a href="#services"
+                                    class="text-gray-300 hover:text-accent transition-colors text-xs md:text-sm">Conseils
+                                    d'investissement</a></li>
+                            <li><a href="#services"
+                                    class="text-gray-300 hover:text-accent transition-colors text-xs md:text-sm">Planification
+                                    financière</a></li>
+                            <li><a href="#indice"
+                                    class="text-gray-300 hover:text-accent transition-colors text-xs md:text-sm">Indice
+                                    GES</a></li>
+                            <li><a href="#services"
+                                    class="text-gray-300 hover:text-accent transition-colors text-xs md:text-sm">Support
+                                    aux entreprises</a></li>
                         </ul>
                     </div>
-                    
+
                     <!-- Colonne 3 -->
                     <div>
-                        <h3 class="text-lg font-bold text-white mb-6">Liens rapides</h3>
-                        <ul class="space-y-3">
-                            <li><a href="#accueil" class="text-gray-300 hover:text-accent transition-colors">Accueil</a></li>
-                            <li><a href="#apropos" class="text-gray-300 hover:text-accent transition-colors">À propos</a></li>
-                            <li><a href="#services" class="text-gray-300 hover:text-accent transition-colors">Services</a></li>
-                            <li><a href="#filiales" class="text-gray-300 hover:text-accent transition-colors">Filiales</a></li>
-                            <li><a href="#contact" class="text-gray-300 hover:text-accent transition-colors">Contact</a></li>
+                        <h3 class="text-base md:text-lg font-bold text-white mb-3 md:mb-6">Liens rapides</h3>
+                        <ul class="space-y-2 md:space-y-3">
+                            <li><a href="#accueil"
+                                    class="text-gray-300 hover:text-accent transition-colors text-xs md:text-sm">Accueil</a>
+                            </li>
+                            <li><a href="#apropos"
+                                    class="text-gray-300 hover:text-accent transition-colors text-xs md:text-sm">À
+                                    propos</a></li>
+                            <li><a href="#indice"
+                                    class="text-gray-300 hover:text-accent transition-colors text-xs md:text-sm">Indice
+                                    GES</a></li>
+                            <li><a href="#filiales"
+                                    class="text-gray-300 hover:text-accent transition-colors text-xs md:text-sm">Filiales</a>
+                            </li>
+                            <li><a href="#contact"
+                                    class="text-gray-300 hover:text-accent transition-colors text-xs md:text-sm">Contact</a>
+                            </li>
                         </ul>
                     </div>
-                    
+
                     <!-- Colonne 4 -->
                     <div>
-                        <h3 class="text-lg font-bold text-white mb-6">Newsletter</h3>
-                        <p class="text-gray-300 mb-4">
+                        <h3 class="text-base md:text-lg font-bold text-white mb-3 md:mb-6">Newsletter</h3>
+                        <p class="text-gray-300 mb-3 md:mb-4 text-xs md:text-sm">
                             Abonnez-vous pour recevoir nos actualités et conseils financiers.
                         </p>
                         <div class="flex">
-                            <input type="email" placeholder="Votre email" class="flex-grow px-4 py-2 rounded-l-lg text-dark focus:outline-none">
-                            <button class="bg-accent text-white px-4 py-2 rounded-r-lg hover:bg-accent/90 transition-colors">
+                            <input type="email" placeholder="Votre email"
+                                class="flex-grow px-3 py-2 rounded-l-lg text-dark focus:outline-none text-xs md:text-sm">
+                            <button
+                                class="bg-accent text-white px-3 py-2 rounded-r-lg hover:bg-accent/90 transition-colors text-xs md:text-sm">
                                 <i class="fas fa-paper-plane"></i>
                             </button>
                         </div>
+                        <div class="mt-4 md:mt-6">
+                            <a href="https://ges-sfd.com" target="_blank"
+                                class="inline-flex items-center text-gray-300 hover:text-accent transition-colors text-xs md:text-sm">
+                                <i class="fas fa-globe mr-2"></i> ges-sfd.com
+                            </a>
+                        </div>
                     </div>
                 </div>
-                
-                <div class="pt-8 border-t border-gray-800 text-center">
-                    <p class="text-gray-400">
+
+                <div class="pt-6 md:pt-8 border-t border-gray-800 text-center">
+                    <p class="text-gray-400 text-xs md:text-sm">
                         &copy; <span id="currentYear"></span> GES S.A. - Société de Services. Tous droits réservés.
                     </p>
                 </div>
             </div>
         </footer>
     </div>
-    
+
+    <!-- Modale pour afficher les graphiques d'une entreprise -->
+    <div id="companyModal" class="modal-overlay">
+        <div class="modal-content p-4 md:p-6 lg:p-8">
+            <button id="modalClose" class="modal-close">
+                <i class="fas fa-times text-lg"></i>
+            </button>
+
+            <div id="modalContent">
+                <!-- Le contenu de la modale sera généré dynamiquement -->
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts JavaScript -->
     <script>
+        // Données des entreprises
+        const companies = [
+            {
+                id: 1,
+                name: "Agence de Voyage specialisé",
+                sector: "Finance",
+                revenue: 2850000,
+                growth: 14.2,
+                gesIndex: 88.5,
+                img: "Agence de Voyage specialisé.jpeg",
+                color: "primary",
+                description: "Services complets de microfinance et d'assurance pour particuliers et petites entreprises.",
+                performanceData: {
+                    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                    revenue: [210, 225, 235, 230, 245, 255, 260, 265, 275, 270, 280, 295],
+                    profit: [45, 48, 50, 49, 52, 55, 57, 60, 63, 61, 65, 68],
+                    clients: [1300, 1350, 1400, 1380, 1450, 1500, 1520, 1550, 1600, 1580, 1650, 1700]
+                }
+            },
+            {
+                id: 2,
+                name: "Auto Parts",
+                sector: "Technologie",
+                revenue: 1950000,
+                growth: 21.5,
+                gesIndex: 93.2,
+                img: "Auto Parts.jpeg",
+                color: "secondary",
+                description: "Solution innovante de portefeuille électronique pour paiements mobiles et en ligne sécurisés.",
+                performanceData: {
+                    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                    revenue: [135, 150, 165, 160, 175, 185, 190, 195, 205, 200, 210, 225],
+                    profit: [30, 35, 40, 38, 43, 47, 50, 53, 57, 55, 60, 65],
+                    users: [55000, 60000, 65000, 63000, 70000, 75000, 77000, 80000, 85000, 83000, 90000, 95000]
+                }
+            },
+            {
+                id: 3,
+                name: "Banque cooperative",
+                sector: "Commerce",
+                revenue: 3450000,
+                growth: 17.8,
+                gesIndex: 91.3,
+                img: "Banque cooperative.jpeg",
+                color: "accent",
+                description: "Plateforme e-commerce complète avec large gamme de produits et livraison rapide.",
+                performanceData: {
+                    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                    revenue: [270, 290, 310, 300, 320, 330, 335, 340, 350, 345, 355, 370],
+                    profit: [55, 60, 65, 63, 68, 71, 73, 75, 78, 76, 80, 85],
+                    orders: [16000, 17000, 18000, 17500, 19000, 20000, 20500, 21000, 22000, 21500, 23000, 24000]
+                }
+            },
+            {
+                id: 4,
+                name: "Centre médical Specialisé",
+                sector: "Éducation",
+                revenue: 1650000,
+                growth: 9.5,
+                gesIndex: 80.2,
+                img: "Centre médical Specialisé.jpeg",
+                color: "primary",
+                description: "Institution d'enseignement supérieur accréditée offrant des programmes académiques variés.",
+                performanceData: {
+                    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                    revenue: [120, 125, 130, 128, 135, 140, 142, 145, 150, 148, 153, 160],
+                    profit: [22, 24, 26, 25, 28, 30, 31, 32, 34, 33, 35, 37],
+                    students: [2100, 2150, 2200, 2180, 2250, 2300, 2320, 2350, 2400, 2380, 2450, 2500]
+                }
+            },
+            {
+                id: 5,
+                name: "Courtier financier",
+                sector: "Finance",
+                revenue: 4350000,
+                growth: 11.8,
+                gesIndex: 87.1,
+                img: "Courtier financier.jpeg",
+                color: "secondary",
+                description: "Institution financière coopérative offrant des services bancaires traditionnels et digitaux.",
+                performanceData: {
+                    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                    revenue: [340, 355, 370, 360, 380, 390, 395, 400, 410, 405, 415, 430],
+                    profit: [70, 75, 80, 78, 83, 87, 90, 93, 97, 95, 100, 105],
+                    accounts: [15500, 16000, 16500, 16300, 17000, 17500, 17700, 18000, 18500, 18300, 19000, 19500]
+                }
+            },
+            {
+                id: 6,
+                name: "E-commerce, Magasin en ligne",
+                sector: "Médias",
+                revenue: 1050000,
+                growth: 25.3,
+                gesIndex: 92.8,
+                img: "E-commerce, Magasin en ligne.jpeg",
+                color: "accent",
+                description: "Studio de production multimédia spécialisé dans films, musique, podcasts et contenu digital.",
+                performanceData: {
+                    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                    revenue: [70, 80, 90, 85, 95, 100, 102, 105, 110, 108, 115, 125],
+                    profit: [15, 18, 21, 20, 23, 25, 27, 29, 31, 30, 33, 38],
+                    projects: [28, 31, 33, 32, 35, 38, 39, 41, 43, 42, 45, 48]
+                }
+            },
+            {
+                id: 7,
+                name: "Ecole Professionnel",
+                sector: "Santé",
+                revenue: 2000000,
+                growth: 11.2,
+                gesIndex: 85.6,
+                img: "Ecole Professionnel.jpeg",
+                color: "primary",
+                description: "Pharmacie moderne avec laboratoire d'analyses médicales spécialisées.",
+                performanceData: {
+                    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    revenue: [150, 155, 160, 158, 165, 170, 173, 175, 180, 178, 183, 190],
+                    profit: [30, 32, 34, 33, 36, 38, 40, 41, 43, 42, 45, 48],
+                    prescriptions: [4700, 4800, 4900, 4850, 5000, 5100, 5150, 5200, 5300, 5250, 5400, 5500]
+                }
+            },
+            {
+                id: 8,
+                name: "Ecole Segondaire: Politechnique",
+                sector: "Services",
+                revenue: 1350000,
+                growth: 19.3,
+                gesIndex: 90.5,
+                img: "Ecole Segondaire: Politechnique.jpeg",
+                color: "secondary",
+                description: "Agence de marketing digital, services technologiques et conseils en transformation numérique.",
+                performanceData: {
+                    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    revenue: [95, 105, 115, 110, 120, 125, 128, 130, 135, 133, 138, 145],
+                    profit: [20, 23, 26, 24, 28, 30, 32, 33, 35, 34, 37, 41],
+                    clients: [130, 140, 150, 145, 155, 160, 165, 170, 175, 173, 180, 190]
+                }
+            },
+            {
+                id: 9,
+                name: "Église Évangélique Chrétienne",
+                sector: "Services",
+                revenue: 1850000,
+                growth: 22.7,
+                gesIndex: 89.4,
+                img: "Église Évangélique Chrétienne.jpeg",
+                color: "accent",
+                description: "Incubateur et accélérateur d'entreprises offrant accompagnement, mentorat et financement.",
+                performanceData: {
+                    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                    revenue: [130, 145, 160, 155, 170, 180, 185, 190, 200, 195, 205, 215],
+                    profit: [26, 30, 34, 32, 37, 40, 42, 44, 47, 45, 49, 53],
+                    startups: [15, 17, 19, 18, 20, 22, 23, 24, 25, 24, 26, 28]
+                }
+            },
+            {
+                id: 10,
+                name: "Entreprise de Microfinance et assurance",
+                sector: "Finance",
+                revenue: 1550000,
+                growth: 13.8,
+                gesIndex: 86.2,
+                img: "Entreprise de Microfinance et assurance.jpeg",
+                color: "primary",
+                description: "Courtier financier spécialisé dans les investissements, assurances et produits financiers.",
+                performanceData: {
+                    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                    revenue: [115, 125, 135, 130, 140, 145, 148, 150, 155, 153, 158, 165],
+                    profit: [23, 26, 29, 27, 31, 33, 35, 36, 38, 37, 40, 43],
+                    transactions: [450, 480, 510, 495, 530, 550, 560, 570, 590, 580, 600, 620]
+                }
+            },
+            {
+                id: 11,
+                name: "Entreprise de sécurité",
+                sector: "Social",
+                revenue: 850000,
+                growth: 8.5,
+                gesIndex: 82.1,
+                img: "Entreprise de sécurité.jpeg",
+                color: "secondary",
+                description: "Fondation caritative soutenant l'éducation, la santé et le développement communautaire.",
+                performanceData: {
+                    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                    revenue: [65, 70, 75, 73, 78, 80, 82, 85, 88, 86, 90, 95],
+                    profit: [13, 15, 17, 16, 18, 19, 20, 21, 22, 21, 23, 25],
+                    beneficiaries: [1200, 1250, 1300, 1280, 1350, 1400, 1420, 1450, 1500, 1480, 1550, 1600]
+                }
+            },
+            {
+                id: 12,
+                name: "Entreprise de Transport spécialisé",
+                sector: "Transport",
+                revenue: 1950000,
+                growth: 12.3,
+                gesIndex: 84.7,
+                img: "Entreprise de Transport specialisé",
+                color: "accent",
+                description: "Services de transport spécialisé pour marchandises et personnes avec flotte moderne.",
+                performanceData: {
+                    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                    revenue: [145, 155, 165, 160, 170, 175, 178, 180, 185, 183, 190, 195],
+                    profit: [29, 32, 35, 33, 37, 39, 41, 42, 44, 43, 46, 49],
+                    shipments: [850, 900, 950, 925, 980, 1000, 1020, 1050, 1100, 1080, 1150, 1200]
+                }
+            },
+            {
+                id: 13,
+                name: "Entreprise Immobilier",
+                sector: "Immobilier",
+                revenue: 3250000,
+                growth: 15.4,
+                gesIndex: 88.9,
+                img: "Entreprise Immobilier.jpeg",
+                color: "primary",
+                description: "Agence immobilière complète: vente, location, gestion et développement de propriétés.",
+                performanceData: {
+                    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                    revenue: [250, 265, 280, 275, 290, 300, 305, 310, 320, 315, 325, 335],
+                    profit: [50, 54, 58, 56, 61, 64, 66, 68, 71, 69, 73, 77],
+                    properties: [85, 90, 95, 93, 98, 100, 102, 105, 110, 108, 115, 120]
+                }
+            },
+            {
+                id: 14,
+                name: "Entreprises de services aux d'entreprises: Incubateur, Accelerateur d'entreprises et accompagnement",
+                sector: "Éducation",
+                revenue: 1450000,
+                growth: 10.7,
+                gesIndex: 83.5,
+                img: "Entreprises de services aux d'entreprises: Incubateur, Accelerateur d'entreprises et accompagnement.jpeg",
+                color: "secondary",
+                description: "École polytechnique offrant des formations techniques et professionnelles de haut niveau.",
+                performanceData: {
+                    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                    revenue: [110, 115, 120, 118, 125, 130, 132, 135, 140, 138, 143, 150],
+                    profit: [22, 24, 26, 25, 28, 30, 31, 32, 34, 33, 35, 37],
+                    students: [850, 880, 910, 895, 930, 950, 960, 980, 1000, 990, 1020, 1050]
+                }
+            },
+            {
+                id: 15,
+                name: "Fondation",
+                sector: "Éducation",
+                revenue: 1250000,
+                growth: 9.8,
+                gesIndex: 81.8,
+                img: "Fondation.jpeg",
+                color: "accent",
+                description: "Centre de formation professionnelle avec programmes certifiés et insertion professionnelle.",
+                performanceData: {
+                    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                    revenue: [95, 100, 105, 103, 108, 110, 112, 115, 120, 118, 123, 130],
+                    profit: [19, 21, 23, 22, 25, 27, 28, 29, 31, 30, 32, 35],
+                    graduates: [180, 190, 200, 195, 205, 210, 215, 220, 230, 225, 235, 245]
+                }
+            },
+            {
+                id: 16,
+                name: "Centre Étude Spécialisé et de Recherche - UTESA",
+                sector: "Santé",
+                revenue: 1850000,
+                growth: 13.5,
+                gesIndex: 86.7,
+                img: "Centre Étude Spécialisé et de Recherche - UTESA.jpeg",
+                color: "primary",
+                description: "Centre médical moderne avec spécialités variées et équipements de pointe.",
+                performanceData: {
+                    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                    revenue: [140, 145, 150, 148, 155, 160, 163, 165, 170, 168, 173, 180],
+                    profit: [28, 30, 32, 31, 34, 36, 38, 39, 41, 40, 43, 46],
+                    patients: [3200, 3300, 3400, 3350, 3500, 3600, 3650, 3700, 3800, 3750, 3900, 4000]
+                }
+            },
+            {
+                id: 17,
+                name: "Agence de Voyage spécialisé",
+                sector: "Tourisme",
+                revenue: 1150000,
+                growth: 18.9,
+                gesIndex: 87.9,
+                img: "fas fa-plane",
+                color: "secondary",
+                description: "Agence de voyage proposant forêts touristiques, billets d'avion et services sur mesure.",
+                performanceData: {
+                    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                    revenue: [85, 95, 105, 100, 110, 115, 118, 120, 125, 123, 128, 135],
+                    profit: [17, 20, 23, 21, 25, 27, 29, 30, 32, 31, 34, 38],
+                    travelers: [450, 480, 510, 495, 530, 550, 560, 570, 590, 580, 600, 620]
+                }
+            },
+            {
+                id: 18,
+                name: "Entreprise de Microfinance",
+                sector: "Automobile",
+                revenue: 1750000,
+                growth: 14.6,
+                gesIndex: 85.1,
+                img: "Entreprise de Microfinance.jpeg",
+                color: "accent",
+                description: "Distributeur de pièces automobiles neuves et d'occasion pour tous types de véhicules.",
+                performanceData: {
+                    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                    revenue: [130, 140, 150, 145, 155, 160, 163, 165, 170, 168, 175, 180],
+                    profit: [26, 29, 32, 30, 34, 36, 38, 39, 41, 40, 43, 46],
+                    partsSold: [5200, 5500, 5800, 5650, 6000, 6200, 6300, 6400, 6600, 6500, 6800, 7000]
+                }
+            },
+            {
+                id: 19,
+                name: "FRS",
+                sector: "Commerce",
+                revenue: 2850000,
+                growth: 16.2,
+                gesIndex: 89.3,
+                img: "FRS.jpeg",
+                color: "primary",
+                description: "Super marché moderne offrant produits frais, épicerie et articles ménagers divers.",
+                performanceData: {
+                    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                    revenue: [220, 235, 250, 245, 260, 270, 275, 280, 290, 285, 295, 305],
+                    profit: [44, 48, 52, 50, 55, 58, 60, 62, 65, 63, 67, 71],
+                    customers: [12500, 13000, 13500, 13300, 14000, 14500, 14700, 15000, 15500, 15300, 16000, 16500]
+                }
+            },
+            {
+                id: 20,
+                name: "LIS",
+                sector: "Beauté",
+                revenue: 950000,
+                growth: 20.8,
+                gesIndex: 88.2,
+                img: "LIS.jpeg",
+                color: "secondary",
+                description: "Salon de beauté complet: coiffure, esthétique, soins du corps et produits cosmétiques.",
+                performanceData: {
+                    months: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                    revenue: [70, 78, 86, 83, 90, 95, 98, 100, 105, 103, 108, 115],
+                    profit: [14, 16, 18, 17, 20, 22, 24, 25, 27, 26, 29, 33],
+                    clients: [850, 900, 950, 925, 980, 1000, 1020, 1050, 1100, 1080, 1150, 1200]
+                }
+            }
+        ];
+        const socialNetworks = [
+            { name: "Facebook", url: "https://www.facebook.com/share/1VM9D5zd11/", icon: "fab fa-facebook-f", color: "bg-blue-600" },
+            { name: "WhatsApp", url: "https://wa.me/c/50948704595", icon: "fab fa-whatsapp", color: "bg-green-500" },
+            { name: "X (Twitter)", url: "https://x.com/GES1291319?t=epsP4USAxAziPr_4vgJDvg&s=09", icon: "fab fa-twitter", color: "bg-black" },
+            { name: "Instagram", url: "https://www.instagram.com/ges_509?igsh=bTFiazAwdmwzNWwx", icon: "fab fa-instagram", color: "bg-pink-600" },
+            { name: "LinkedIn", url: "https://www.linkedin.com/in/ges-112a20320?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app", icon: "fab fa-linkedin-in", color: "bg-blue-700" },
+            { name: "YouTube", url: "https://www.youtube.com/@GES-509", icon: "fab fa-youtube", color: "bg-red-600" },
+            { name: "TikTok", url: "https://www.tiktok.com/@ges.509?_t=8oUSSuU5qQn&_r=1", icon: "fab fa-tiktok", color: "bg-black" },
+            { name: "Snapchat", url: "https://www.snapchat.com/add/ges.509?share_id=ezGEDjZwTyI&locale=fr-FR", icon: "fab fa-snapchat-ghost", color: "bg-yellow-400" },
+            { name: "Pinterest", url: "https://pin.it/3pva40TAX", icon: "fab fa-pinterest-p", color: "bg-red-600" },
+            { name: "Threads", url: "https://www.threads.net/@ges_509", icon: "fab fa-threads", color: "bg-black" },
+            { name: "Google Maps", url: "https://maps.app.goo.gl/qtNdMDUMKhruVvPT9?g_st=awb", icon: "fas fa-map-marker-alt", color: "bg-red-500" }
+        ];
+
         // Initialisation après chargement du DOM
-        document.addEventListener('DOMContentLoaded', function() {
-            // Animation du splash screen avec Anime.js
+        document.addEventListener('DOMContentLoaded', function () {
+            // Animation du splash screen
             const splashScreen = document.getElementById('splashScreen');
             const mainContent = document.getElementById('mainContent');
-            
-            // Animation d'entrée du splash screen
+
             anime({
                 targets: '#splashScreen .animate-scale-in',
                 scale: [0.8, 1],
@@ -974,7 +1620,7 @@
                 duration: 800,
                 easing: 'easeOutCubic'
             });
-            
+
             anime({
                 targets: '#splashScreen .animate-fade-in',
                 opacity: [0, 1],
@@ -982,7 +1628,7 @@
                 delay: 300,
                 easing: 'easeOutCubic'
             });
-            
+
             anime({
                 targets: '#splashScreen .animate-slide-up',
                 translateY: [20, 0],
@@ -991,94 +1637,784 @@
                 delay: 500,
                 easing: 'easeOutCubic'
             });
-            
-            // Après 3 secondes, animation de sortie du splash screen
+
+            // Après 2.5 secondes, animation de sortie du splash screen
             setTimeout(() => {
                 anime({
                     targets: '#splashScreen',
                     opacity: [1, 0],
                     scale: [1, 1.1],
-                    duration: 800,
+                    duration: 600,
                     easing: 'easeInOutQuad',
-                    complete: function() {
+                    complete: function () {
                         splashScreen.style.display = 'none';
                         mainContent.style.opacity = '1';
+
+                        // Initialiser les composants
+                        initializeComponents();
+                    }
+                });
+            }, 2500);
+
+            // Initialiser les composants
+            function initializeComponents() {
+                // Gestion du menu burger
+                setupMobileMenu();
+
+                // Générer les entreprises
+                generateCompanies();
+
+                // Générer le tableau des entreprises
+                generateCompaniesTable();
+
+                // Générer les réseaux sociaux
+                generateSocialNetworks();
+
+                // Initialiser les graphiques
+                initializeCharts();
+
+                // Initialiser les formulaires
+                setupForms();
+
+                // Initialiser les modales
+                setupModals();
+
+                // Initialiser l'animation au défilement
+                setupScrollAnimation();
+
+                // Mettre à jour l'année dans le footer
+                document.getElementById('currentYear').textContent = new Date().getFullYear();
+            }
+
+            // Gestion du menu burger mobile
+            function setupMobileMenu() {
+                const burgerBtn = document.getElementById('burgerBtn');
+                const mobileMenu = document.getElementById('mobileMenu');
+
+                if (burgerBtn && mobileMenu) {
+                    burgerBtn.addEventListener('click', function () {
+                        mobileMenu.classList.toggle('hidden');
+                        burgerBtn.classList.toggle('burger-active');
+                    });
+
+                    // Fermer le menu mobile lors du clic sur un lien
+                    const mobileLinks = mobileMenu.querySelectorAll('a');
+                    mobileLinks.forEach(link => {
+                        link.addEventListener('click', () => {
+                            mobileMenu.classList.add('hidden');
+                            burgerBtn.classList.remove('burger-active');
+                        });
+                    });
+                }
+            }
+
+            // Générer les cartes d'entreprises
+            function generateCompanies() {
+                const container = document.getElementById('companiesContainer');
+                if (!container) return;
+
+                container.innerHTML = '';
+
+                companies.forEach(company => {
+                    const companyCard = document.createElement('div');
+                    companyCard.className = 'partner-logo bg-white rounded-xl p-4 flex flex-col items-center justify-center shadow-md hover:shadow-lg cursor-pointer animate-on-scroll';
+                    companyCard.dataset.companyId = company.id;
+
+                    // Déterminer la couleur en fonction du secteur
+                    let colorClass = 'text-primary';
+                    if (company.color === 'secondary') colorClass = 'text-secondary';
+                    if (company.color === 'accent') colorClass = 'text-accent';
+
+                    companyCard.innerHTML = `
+                      <div class="w-12 h-12 md:w-16 md:h-16 rounded-full flex items-center justify-center mx-auto mb-3 ${company.colorClass}">
+    <img 
+        src="${company.img}" 
+        alt="${company.name}" 
+        class="w-6 h-6 md:w-8 md:h-8 object-contain"
+    />
+</div>
+
+<h3 class="font-bold text-dark text-center text-sm md:text-base mb-1">
+    ${company.name}
+</h3>
+
+<p class="text-dark/70 text-center text-xs md:text-sm mb-2">
+    ${company.sector}
+</p>
+
+<div class="flex items-center justify-center mt-1">
+    <span class="text-xs md:text-sm font-bold ${company.gesIndex >= 90
+                            ? 'text-success'
+                            : company.gesIndex >= 80
+                                ? 'text-warning'
+                                : 'text-danger'
+                        }">
+        Indice : ${company.gesIndex}
+    </span>
+</div>
+
+<div class="mt-2 text-center">
+    <span class="text-xs text-primary font-medium">
+        Cliquez pour voir les graphiques
+    </span>
+</div>
+
+                    `;
+
+                    companyCard.addEventListener('click', () => openCompanyModal(company.id));
+                    container.appendChild(companyCard);
+                });
+            }
+
+            // Générer le tableau des entreprises
+            function generateCompaniesTable() {
+                const tbody = document.querySelector('#indice table tbody');
+                if (!tbody) return;
+
+                tbody.innerHTML = '';
+
+                companies.forEach(company => {
+                    const row = document.createElement('tr');
+                    row.className = 'hover:bg-gray-50 cursor-pointer';
+                    row.dataset.companyId = company.id;
+
+                    // Déterminer la classe de couleur pour la croissance
+                    let growthClass = 'bg-green-100 text-green-800';
+                    if (company.growth < 5) growthClass = 'bg-red-100 text-red-800';
+                    else if (company.growth < 10) growthClass = 'bg-yellow-100 text-yellow-800';
+
+                    // Format des revenus
+                    const revenueFormatted = new Intl.NumberFormat('fr-FR', {
+                        style: 'currency',
+                        currency: 'USD',
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0
+                    }).format(company.revenue).replace('USD', '$');
+
+                    row.innerHTML = `
+                        <td class="px-3 py-2 md:px-6 md:py-3 whitespace-nowrap font-medium text-dark text-sm md:text-base">
+                            <div class="flex items-center">
+                                <i class="${company.icon} mr-2 text-${company.color}"></i>
+                                ${company.name}
+                            </div>
+                        </td>
+                        <td class="px-3 py-2 md:px-6 md:py-3 whitespace-nowrap text-dark/70 text-sm md:text-base">${company.sector}</td>
+                        <td class="px-3 py-2 md:px-6 md:py-3 whitespace-nowrap text-dark/70 text-sm md:text-base">${revenueFormatted}</td>
+                        <td class="px-3 py-2 md:px-6 md:py-3 whitespace-nowrap">
+                            <span class="px-2 py-1 text-xs font-semibold rounded-full ${growthClass}">${company.growth > 0 ? '+' : ''}${company.growth}%</span>
+                        </td>
+                        <td class="px-3 py-2 md:px-6 md:py-3 whitespace-nowrap font-bold ${company.gesIndex >= 90 ? 'text-success' : company.gesIndex >= 80 ? 'text-warning' : 'text-danger'} text-sm md:text-base">
+                            ${company.gesIndex}
+                        </td>
+                    `;
+
+                    row.addEventListener('click', () => openCompanyModal(company.id));
+                    tbody.appendChild(row);
+                });
+            }
+
+            // Générer les réseaux sociaux
+            function generateSocialNetworks() {
+                const contactSocialContainer = document.querySelector('#contact .flex-wrap');
+                const footerSocialContainer = document.querySelector('footer .flex-wrap');
+
+                if (contactSocialContainer) {
+                    socialNetworks.forEach(network => {
+                        const link = document.createElement('a');
+                        link.href = network.url;
+                        link.target = '_blank';
+                        link.className = 'w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform duration-300';
+                        link.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue(`--${network.color}`) || network.color;
+                        link.title = network.name;
+
+                        const icon = document.createElement('i');
+                        icon.className = network.icon;
+
+                        link.appendChild(icon);
+                        contactSocialContainer.appendChild(link);
+                    });
+                }
+
+                // Ajouter également au footer si nécessaire
+                if (footerSocialContainer) {
+                    // On peut ajouter les réseaux principaux seulement dans le footer
+                    socialNetworks.slice(0, 6).forEach(network => {
+                        const link = document.createElement('a');
+                        link.href = network.url;
+                        link.target = '_blank';
+                        link.className = 'w-8 h-8 rounded-full flex items-center justify-center text-white hover:scale-110 transition-transform duration-300 inline-block mr-2 mb-2';
+                        link.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue(`--${network.color}`) || network.color;
+                        link.title = network.name;
+
+                        const icon = document.createElement('i');
+                        icon.className = network.icon;
+
+                        link.appendChild(icon);
+                        footerSocialContainer.appendChild(link);
+                    });
+                }
+            }
+
+            // Initialiser les graphiques
+            function initializeCharts() {
+                // Graphique de l'indice GES
+                const gesIndexCtx = document.getElementById('gesIndexChart');
+                if (gesIndexCtx) {
+                    new Chart(gesIndexCtx.getContext('2d'), {
+                        type: 'line',
+                        data: {
+                            labels: ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'],
+                            datasets: [{
+                                label: 'Indice GES',
+                                data: [78, 82, 85, 83, 86, 88, 90, 89, 92, 91, 93, 95],
+                                borderColor: '#0A2463',
+                                backgroundColor: 'rgba(10, 36, 99, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4,
+                                pointBackgroundColor: '#0A2463',
+                                pointRadius: 4,
+                                pointHoverRadius: 6
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'top'
+                                },
+                                tooltip: {
+                                    mode: 'index',
+                                    intersect: false
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: false,
+                                    min: 70,
+                                    max: 100,
+                                    ticks: {
+                                        stepSize: 5
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Graphique d'analyse financière
+                const financialAnalysisCtx = document.getElementById('financialAnalysisChart');
+                if (financialAnalysisCtx) {
+                    new Chart(financialAnalysisCtx.getContext('2d'), {
+                        type: 'bar',
+                        data: {
+                            labels: ['Revenus', 'Profits', 'Croissance', 'Investissements', 'Rendement'],
+                            datasets: [
+                                {
+                                    label: 'Q4 2025',
+                                    data: [85, 78, 92, 75, 88],
+                                    backgroundColor: '#3E92CC'
+                                },
+                                {
+                                    label: 'Q3 2025',
+                                    data: [80, 72, 85, 70, 82],
+                                    backgroundColor: '#0A2463'
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'top'
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 100
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Graphique de performance par secteur
+                const sectorPerformanceCtx = document.getElementById('sectorPerformanceChart');
+                if (sectorPerformanceCtx) {
+                    new Chart(sectorPerformanceCtx.getContext('2d'), {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Finance', 'Technologie', 'Commerce', 'Éducation', 'Santé', 'Immobilier'],
+                            datasets: [{
+                                data: [30, 25, 20, 10, 8, 7],
+                                backgroundColor: [
+                                    '#0A2463',
+                                    '#3E92CC',
+                                    '#FF6B35',
+                                    '#4ECDC4',
+                                    '#FFD166',
+                                    '#06D6A0'
+                                ]
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'right'
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+
+            // Initialiser les formulaires
+            function setupForms() {
+                // Formulaire de contact
+                const contactForm = document.getElementById('contactForm');
+                if (contactForm) {
+                    contactForm.addEventListener('submit', function (e) {
+                        e.preventDefault();
+
+                        const submitBtn = contactForm.querySelector('button[type="submit"]');
+                        const originalText = submitBtn.textContent;
+
+                        submitBtn.textContent = 'Message envoyé!';
+                        submitBtn.classList.remove('bg-primary');
+                        submitBtn.classList.add('bg-success');
+
+                        // Simuler l'envoi
+                        setTimeout(() => {
+                            submitBtn.textContent = originalText;
+                            submitBtn.classList.remove('bg-success');
+                            submitBtn.classList.add('bg-primary');
+                            contactForm.reset();
+
+                            // Afficher une notification
+                            showNotification('Votre message a été envoyé avec succès!', 'success');
+                        }, 2000);
+                    });
+                }
+
+                // Formulaire d'ajout de données
+                const addCompanyDataForm = document.getElementById('addCompanyDataForm');
+                if (addCompanyDataForm) {
+                    addCompanyDataForm.addEventListener('submit', function (e) {
+                        e.preventDefault();
+
+                        const companyName = document.getElementById('companyName').value;
+                        const sector = document.getElementById('sector').value;
+                        const revenue = document.getElementById('revenue').value;
+                        const growth = document.getElementById('growth').value;
+
+                        if (!companyName || !sector || !revenue || !growth) {
+                            showNotification('Veuillez remplir tous les champs', 'error');
+                            return;
+                        }
+
+                        const submitBtn = addCompanyDataForm.querySelector('button[type="submit"]');
+                        const originalText = submitBtn.textContent;
+
+                        submitBtn.textContent = 'Données ajoutées!';
+                        submitBtn.classList.remove('bg-primary');
+                        submitBtn.classList.add('bg-success');
+
+                        // Simuler l'ajout
+                        setTimeout(() => {
+                            submitBtn.textContent = originalText;
+                            submitBtn.classList.remove('bg-success');
+                            submitBtn.classList.add('bg-primary');
+                            addCompanyDataForm.reset();
+
+                            showNotification('Les données ont été ajoutées avec succès!', 'success');
+                        }, 2000);
+                    });
+                }
+            }
+
+            // Initialiser les modales
+            function setupModals() {
+                const modalOverlay = document.getElementById('companyModal');
+                const modalClose = document.getElementById('modalClose');
+
+                if (modalClose) {
+                    modalClose.addEventListener('click', closeModal);
+                }
+
+                if (modalOverlay) {
+                    modalOverlay.addEventListener('click', function (e) {
+                        if (e.target === modalOverlay) {
+                            closeModal();
+                        }
+                    });
+                }
+
+                // Fermer la modale avec la touche Échap
+                document.addEventListener('keydown', function (e) {
+                    if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+                        closeModal();
+                    }
+                });
+            }
+
+            // Ouvrir la modale d'une entreprise
+            function openCompanyModal(companyId) {
+                const company = companies.find(c => c.id === companyId);
+                if (!company) return;
+
+                const modalOverlay = document.getElementById('companyModal');
+                const modalContent = document.getElementById('modalContent');
+
+                if (!modalOverlay || !modalContent) return;
+
+                // Générer le contenu de la modale
+                modalContent.innerHTML = generateModalContent(company);
+
+                // Afficher la modale
+                modalOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+
+                // Initialiser les graphiques dans la modale
+                setTimeout(() => {
+                    initializeModalCharts(company);
+                }, 100);
+            }
+
+            // Générer le contenu HTML de la modale
+            function generateModalContent(company) {
+                const revenueFormatted = new Intl.NumberFormat('fr-FR', {
+                    style: 'currency',
+                    currency: 'USD',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(company.revenue).replace('USD', '$');
+
+                return `
+                    <div class="mb-6">
+                        <h2 class="text-2xl md:text-3xl font-bold text-primary mb-2">${company.name}</h2>
+                        <div class="flex flex-wrap items-center gap-2 mb-4">
+                            <span class="px-3 py-1 bg-${company.color}/10 text-${company.color} rounded-full text-sm font-medium">
+                                ${company.sector}
+                            </span>
+                            <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm font-medium">
+                                Indice GES: <strong>${company.gesIndex}</strong>
+                            </span>
+                        </div>
+                        <p class="text-dark/70 mb-6">${company.description}</p>
                         
-                        // Animation d'entrée du contenu principal
-                        anime({
-                            targets: '.animate-fade-in',
-                            opacity: [0, 1],
-                            duration: 800,
-                            delay: anime.stagger(100),
-                            easing: 'easeOutCubic'
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <p class="text-sm text-gray-500 mb-1">Revenus annuels</p>
+                                <p class="text-xl font-bold text-primary">HTG{revenueFormatted}</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <p class="text-sm text-gray-500 mb-1">Croissance</p>
+                                <p class="text-xl font-bold ${company.growth >= 15 ? 'text-success' : company.growth >= 5 ? 'text-warning' : 'text-danger'}">${company.growth > 0 ? '+' : ''}${company.growth}%</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <p class="text-sm text-gray-500 mb-1">Performance</p>
+                                <p class="text-xl font-bold ${company.gesIndex >= 90 ? 'text-success' : company.gesIndex >= 80 ? 'text-warning' : 'text-danger'}">${company.gesIndex}/100</p>
+                            </div>
+                            <div class="bg-gray-50 rounded-lg p-4">
+                                <p class="text-sm text-gray-500 mb-1">Statut</p>
+                                <p class="text-xl font-bold text-primary">${company.gesIndex >= 80 ? 'Excellente' : company.gesIndex >= 70 ? 'Bonne' : 'À améliorer'}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <div class="flex overflow-x-auto space-x-2 mb-4 pb-2">
+                            <button class="tab-button active" data-tab="revenue">Revenus</button>
+                            <button class="tab-button" data-tab="profit">Profits</button>
+                            <button class="tab-button" data-tab="clients">Clients/Utilisateurs</button>
+                            <button class="tab-button" data-tab="performance">Performance</button>
+                        </div>
+                        
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="revenue-tab">
+                                <div class="chart-container" style="height: 250px;">
+                                    <canvas id="modalRevenueChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="tab-pane hidden" id="profit-tab">
+                                <div class="chart-container" style="height: 250px;">
+                                    <canvas id="modalProfitChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="tab-pane hidden" id="clients-tab">
+                                <div class="chart-container" style="height: 250px;">
+                                    <canvas id="modalClientsChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="tab-pane hidden" id="performance-tab">
+                                <div class="chart-container" style="height: 250px;">
+                                    <canvas id="modalPerformanceChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 pt-6 border-t border-gray-200">
+                        <h3 class="text-lg font-bold text-primary mb-3">Détails financiers</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <h4 class="font-medium text-dark mb-2">Points forts</h4>
+                                <ul class="text-dark/70 text-sm space-y-1">
+                                    <li><i class="fas fa-check-circle text-success mr-2"></i> Croissance stable et régulière</li>
+                                    <li><i class="fas fa-check-circle text-success mr-2"></i> Clientèle fidèle et croissante</li>
+                                    <li><i class="fas fa-check-circle text-success mr-2"></i> Rentabilité en amélioration</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-medium text-dark mb-2">Recommandations</h4>
+                                <ul class="text-dark/70 text-sm space-y-1">
+                                    <li><i class="fas fa-lightbulb text-warning mr-2"></i> Investir dans l'expansion numérique</li>
+                                    <li><i class="fas fa-lightbulb text-warning mr-2"></i> Diversifier les sources de revenus</li>
+                                    <li><i class="fas fa-lightbulb text-warning mr-2"></i> Optimiser les coûts opérationnels</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Initialiser les graphiques dans la modale
+            function initializeModalCharts(company) {
+                // Graphique des revenus
+                const revenueCtx = document.getElementById('modalRevenueChart');
+                if (revenueCtx) {
+                    new Chart(revenueCtx.getContext('2d'), {
+                        type: 'line',
+                        data: {
+                            labels: company.performanceData.months,
+                            datasets: [{
+                                label: 'Revenus (en milliers $)',
+                                data: company.performanceData.revenue,
+                                borderColor: '#0A2463',
+                                backgroundColor: 'rgba(10, 36, 99, 0.1)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'top'
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Graphique des profits
+                const profitCtx = document.getElementById('modalProfitChart');
+                if (profitCtx) {
+                    new Chart(profitCtx.getContext('2d'), {
+                        type: 'bar',
+                        data: {
+                            labels: company.performanceData.months,
+                            datasets: [{
+                                label: 'Profits (en milliers $)',
+                                data: company.performanceData.profit,
+                                backgroundColor: '#3E92CC',
+                                borderColor: '#3E92CC',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'top'
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Graphique des clients/utilisateurs
+                const clientsCtx = document.getElementById('modalClientsChart');
+                if (clientsCtx) {
+                    // Déterminer quelle donnée de clients utiliser
+                    const clientsData = company.performanceData.clients || company.performanceData.users || company.performanceData.orders || company.performanceData.students || company.performanceData.accounts || company.performanceData.projects;
+                    const label = company.performanceData.clients ? 'Clients' :
+                        company.performanceData.users ? 'Utilisateurs' :
+                            company.performanceData.orders ? 'Commandes' :
+                                company.performanceData.students ? 'Étudiants' :
+                                    company.performanceData.accounts ? 'Comptes' :
+                                        company.performanceData.projects ? 'Projets' : 'Métrique';
+
+                    if (clientsData) {
+                        new Chart(clientsCtx.getContext('2d'), {
+                            type: 'line',
+                            data: {
+                                labels: company.performanceData.months,
+                                datasets: [{
+                                    label: label,
+                                    data: clientsData,
+                                    borderColor: '#FF6B35',
+                                    backgroundColor: 'rgba(255, 107, 53, 0.1)',
+                                    borderWidth: 2,
+                                    fill: true,
+                                    tension: 0.4
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        display: true,
+                                        position: 'top'
+                                    }
+                                }
+                            }
                         });
                     }
+                }
+
+                // Graphique de performance
+                const performanceCtx = document.getElementById('modalPerformanceChart');
+                if (performanceCtx) {
+                    // Simuler des données de performance
+                    const performanceData = company.performanceData.revenue.map((rev, index) => {
+                        const profit = company.performanceData.profit[index];
+                        return Math.round((profit / rev) * 100);
+                    });
+
+                    new Chart(performanceCtx.getContext('2d'), {
+                        type: 'line',
+                        data: {
+                            labels: company.performanceData.months,
+                            datasets: [{
+                                label: 'Marge bénéficiaire (%)',
+                                data: performanceData,
+                                borderColor: '#06D6A0',
+                                backgroundColor: 'rgba(6, 214, 160, 0.1)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: true,
+                                    position: 'top'
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 50,
+                                    ticks: {
+                                        callback: function (value) {
+                                            return value + '%';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    });
+                }
+
+                // Gestion des onglets dans la modale
+                const tabButtons = document.querySelectorAll('.tab-button');
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        const tabId = this.dataset.tab;
+
+                        // Désactiver tous les onglets
+                        tabButtons.forEach(btn => btn.classList.remove('active'));
+                        document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.add('hidden'));
+
+                        // Activer l'onglet cliqué
+                        this.classList.add('active');
+                        document.getElementById(`${tabId}-tab`).classList.remove('hidden');
+                    });
                 });
-            }, 3000);
-            
-            // Gestion du menu burger
-            const burgerBtn = document.getElementById('burgerBtn');
-            const mobileMenu = document.getElementById('mobileMenu');
-            
-            burgerBtn.addEventListener('click', function() {
-                mobileMenu.classList.toggle('hidden');
-                burgerBtn.classList.toggle('burger-active');
-            });
-            
-            // Fermer le menu mobile lors du clic sur un lien
-            const mobileLinks = mobileMenu.querySelectorAll('a');
-            mobileLinks.forEach(link => {
-                link.addEventListener('click', () => {
-                    mobileMenu.classList.add('hidden');
-                    burgerBtn.classList.remove('burger-active');
-                });
-            });
-            
-            // Gestion du formulaire de contact
-            const contactForm = document.getElementById('contactForm');
-            contactForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Animation de succès
-                const submitBtn = contactForm.querySelector('button[type="submit"]');
-                const originalText = submitBtn.textContent;
-                
-                submitBtn.textContent = 'Message envoyé!';
-                submitBtn.classList.remove('bg-primary');
-                submitBtn.classList.add('bg-green-600');
-                
-                // Réinitialiser après 3 secondes
+            }
+
+            // Fermer la modale
+            function closeModal() {
+                const modalOverlay = document.getElementById('companyModal');
+                if (modalOverlay) {
+                    modalOverlay.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            }
+
+            // Afficher une notification
+            function showNotification(message, type = 'info') {
+                // Créer l'élément de notification
+                const notification = document.createElement('div');
+                notification.className = `fixed top-4 right-4 z-50 px-4 py-3 rounded-lg shadow-lg max-w-md animate-slide-in-right ${type === 'success' ? 'bg-success text-white' : type === 'error' ? 'bg-danger text-white' : 'bg-primary text-white'}`;
+                notification.innerHTML = `
+                    <div class="flex items-center">
+                        <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'} mr-3"></i>
+                        <span>${message}</span>
+                    </div>
+                `;
+
+                document.body.appendChild(notification);
+
+                // Supprimer la notification après 5 secondes
                 setTimeout(() => {
-                    submitBtn.textContent = originalText;
-                    submitBtn.classList.remove('bg-green-600');
-                    submitBtn.classList.add('bg-primary');
-                    contactForm.reset();
-                }, 3000);
-            });
-            
-            // Mettre à jour l'année dans le footer
-            document.getElementById('currentYear').textContent = new Date().getFullYear();
-            
-            // Animation au défilement
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -100px 0px'
-            };
-            
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate-fade-in');
-                        observer.unobserve(entry.target);
-                    }
+                    notification.style.opacity = '0';
+                    notification.style.transform = 'translateX(100%)';
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 5000);
+            }
+
+            // Initialiser l'animation au défilement
+            function setupScrollAnimation() {
+                const animatedElements = document.querySelectorAll('.animate-on-scroll');
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('animated');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
                 });
-            }, observerOptions);
-            
-            // Observer les éléments à animer
-            document.querySelectorAll('section').forEach(section => {
-                observer.observe(section);
-            });
+
+                animatedElements.forEach(element => {
+                    observer.observe(element);
+                });
+
+                // Animer les éléments au chargement initial
+                setTimeout(() => {
+                    animatedElements.forEach(element => {
+                        if (element.getBoundingClientRect().top < window.innerHeight) {
+                            element.classList.add('animated');
+                        }
+                    });
+                }, 100);
+            }
         });
     </script>
 </body>
+
 </html>
